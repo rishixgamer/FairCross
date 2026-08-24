@@ -1,0 +1,126 @@
+{
+  "_provenance": {
+    "frozen_for_release": "v0.1.0",
+    "note": "Frozen reference values published for v0.1.0. These detect drift from a recorded value, not disagreement between two live implementations; see docs/LIMITATIONS.md.",
+    "status": "frozen",
+    "verifier": "scripts/verify_golden_vectors.py"
+  },
+  "allocation": {
+    "allocations": [
+      {
+        "account": 1,
+        "allocated_qty": 4,
+        "limit_price": 100,
+        "order_id": 40,
+        "original_qty": 10,
+        "seq": 0,
+        "side": "buy"
+      },
+      {
+        "account": 2,
+        "allocated_qty": 3,
+        "limit_price": 100,
+        "order_id": 41,
+        "original_qty": 10,
+        "seq": 1,
+        "side": "buy"
+      },
+      {
+        "account": 3,
+        "allocated_qty": 3,
+        "limit_price": 100,
+        "order_id": 42,
+        "original_qty": 10,
+        "seq": 2,
+        "side": "buy"
+      },
+      {
+        "account": 4,
+        "allocated_qty": 10,
+        "limit_price": 100,
+        "order_id": 43,
+        "original_qty": 10,
+        "seq": 3,
+        "side": "sell"
+      }
+    ],
+    "target_volume": 10,
+    "total_buy_allocated": 10,
+    "total_sell_allocated": 10
+  },
+  "batch_header_hash": "ff60eacfcbc22fde06e4693f2d9a2a320bc47dddf54ff1a8838c8b94673f1541",
+  "clearing_price": 100,
+  "executable_volume": 10,
+  "fills": [
+    {
+      "account_id": 1,
+      "consideration": 400,
+      "execution_price": 100,
+      "fill_idx": 0,
+      "fill_qty": 4,
+      "instrument_id": 1,
+      "order_id": 40,
+      "side": "buy"
+    },
+    {
+      "account_id": 2,
+      "consideration": 300,
+      "execution_price": 100,
+      "fill_idx": 1,
+      "fill_qty": 3,
+      "instrument_id": 1,
+      "order_id": 41,
+      "side": "buy"
+    },
+    {
+      "account_id": 3,
+      "consideration": 300,
+      "execution_price": 100,
+      "fill_idx": 2,
+      "fill_qty": 3,
+      "instrument_id": 1,
+      "order_id": 42,
+      "side": "buy"
+    },
+    {
+      "account_id": 4,
+      "consideration": 1000,
+      "execution_price": 100,
+      "fill_idx": 3,
+      "fill_qty": 10,
+      "instrument_id": 1,
+      "order_id": 43,
+      "side": "sell"
+    }
+  ],
+  "fixture": "05_pro_rata_remainders",
+  "post_state": [
+    {
+      "account_id": 1,
+      "cash": 9600,
+      "inventory": {
+        "1": 4
+      }
+    },
+    {
+      "account_id": 2,
+      "cash": 9700,
+      "inventory": {
+        "1": 3
+      }
+    },
+    {
+      "account_id": 3,
+      "cash": 9700,
+      "inventory": {
+        "1": 3
+      }
+    },
+    {
+      "account_id": 4,
+      "cash": 1000,
+      "inventory": {}
+    }
+  ],
+  "r1cs_constraints": 61
+}

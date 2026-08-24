@@ -1,0 +1,38 @@
+{
+  "_provenance": {
+    "frozen_for_release": "v0.1.0",
+    "note": "Frozen reference values published for v0.1.0. These detect drift from a recorded value, not disagreement between two live implementations; see docs/LIMITATIONS.md.",
+    "status": "frozen",
+    "verifier": "scripts/verify_golden_vectors.py"
+  },
+  "sample_session": {
+    "final_batch_id": 2,
+    "final_history_accumulator": "e87b3391724f7a1955d585e0dc87bb10a74a9a5194deb7b69810822a0889d301",
+    "final_ledger_root": "ffaee783515d7fec7347126b574c87032a8017a93f0bff91f4a9340931b46677",
+    "num_batches": 2,
+    "proof_certificate": "FC-SESSION-PROOF-V1:batches=2:history_acc=e87b3391724f7a1955d585e0dc87bb10a74a9a5194deb7b69810822a0889d301:final_batch=2",
+    "step_constraints": [
+      35,
+      35
+    ]
+  },
+  "ten_batch_session": {
+    "final_batch_id": 10,
+    "final_history_accumulator": "63930dbd7d5acb53c51aa25e1323a23eac9bdbcd66146d500a209d75ad88fbf4",
+    "final_ledger_root": "c05878dce58cbfd9c670e6eb9be8388c553ee3273e47f5731007ecca041a78cd",
+    "num_batches": 10,
+    "proof_certificate": "FC-SESSION-PROOF-V1:batches=10:history_acc=63930dbd7d5acb53c51aa25e1323a23eac9bdbcd66146d500a209d75ad88fbf4:final_batch=10",
+    "step_constraints": [
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37,
+      37
+    ]
+  }
+}

@@ -1,0 +1,160 @@
+{
+  "manifest_version": "2.0.0",
+  "project": "FairCross",
+  "title": "FairCross Empirical Research & Reproducibility Manifest",
+  "environment": {
+    "language": "C++20",
+    "compilers": [
+      "clang++ >= 15",
+      "g++ >= 12"
+    ],
+    "build_flags": {
+      "tests": "-std=c++20 -O2 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Wdouble-promotion -fsanitize=address,undefined",
+      "benchmarks": "-std=c++20 -O2 (no sanitizers)"
+    },
+    "sanitizer_note": "Benchmarks build without ASan/UBSan: the sanitizers inflate timings by a large and variable factor, so numbers measured under them would not be reproducible. The test suite always runs sanitized.",
+    "supported_platforms": [
+      "aarch64-apple-darwin",
+      "x86_64-linux-gnu",
+      "aarch64-linux-gnu"
+    ],
+    "hardware_notes": {
+      "standard_suite": "Runs on any modern commodity CPU (Apple Silicon M-series, Intel Core i7/i9, AMD Ryzen) with >= 4GB RAM.",
+      "hardware_accelerated_af_xdp": "DEFERRED: Requires Linux bare-metal with Intel E810 or Mellanox ConnectX-6 NIC."
+    },
+    "artifact_metadata": "Every artifact under experiments/results/ carries its own environment block and reproduction_command recording the build that produced it. The values in this manifest describe the supported build matrix, not the machine any particular artifact was measured on."
+  },
+  "experiments": [
+    {
+      "id": "EXP-001",
+      "name": "Verification & Invariant Gate",
+      "description": "Builds the tree under ASan and UBSan, verifies the frozen golden vectors, runs the full example and property test suite, and exercises every advertised CLI subcommand.",
+      "command": "./scripts/check.sh",
+      "hardware_requirements": "Commodity CPU, >= 4GB RAM",
+      "expected_outputs": [],
+      "verification_pattern": "PASS"
+    },
+    {
+      "id": "EXP-002",
+      "name": "Adversarial Operator Attack Matrix",
+      "description": "Executes 11 mutation attack suites attempting cash creation, asset theft, front-running, overfill, limit price violation, and order censorship.",
+      "command": "cpp/bin/faircross_bench attack-evidence",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/attack_evidence_table.json",
+        "experiments/results/attack_evidence_table.csv"
+      ]
+    },
+    {
+      "id": "EXP-003",
+      "name": "Complete-Input ZK Accounting Constraint Scaling",
+      "description": "Measures Merkle tree and order accounting constraint synthesis across batch sizes.",
+      "command": "cpp/bin/faircross_bench accounting-metrics",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/zk_accounting_metrics.json"
+      ]
+    },
+    {
+      "id": "EXP-004",
+      "name": "Single-Batch ZK Proof Scaling Benchmark",
+      "description": "Benchmarks R1CS constraint count, witness size, prove latency, and proof footprint for batch sizes N in [2, 4, 8, 16, 32, 64].",
+      "command": "cpp/bin/faircross_bench proof-scaling",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/zk_proof_scaling_benchmark.json"
+      ]
+    },
+    {
+      "id": "EXP-005",
+      "name": "Two-Step IVC Folding Spike",
+      "description": "Evaluates 2-step recursive state transition folding latency and history accumulator binding.",
+      "command": "cpp/bin/faircross_bench two-step-ivc",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/zk_two_step_ivc_spike.json"
+      ]
+    },
+    {
+      "id": "EXP-006",
+      "name": "10-Batch Running Audit Certificate & Tamper Resistance",
+      "description": "Generates a 10-batch sequential session proof and verifies historical mutation rejection.",
+      "command": "cpp/bin/faircross_bench ten-batch-audit",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/zk_ten_batch_audit_metrics.json"
+      ]
+    },
+    {
+      "id": "EXP-007",
+      "name": "Recursive Folded History vs Independent Proofs Trade-off",
+      "description": "Measures storage compression and verifier work comparing folded running audit proofs against independent batch proofs.",
+      "command": "cpp/bin/faircross_bench recursive-vs-independent",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/zk_recursive_vs_independent_comparison.json"
+      ]
+    },
+    {
+      "id": "EXP-008",
+      "name": "Batch-Interval Market Simulation Matrix",
+      "description": "Runs multi-interval (10ms..1000ms) multi-seed market quality simulation capturing fill rate, execution delay, and slippage.",
+      "command": "cpp/bin/faircross_bench batch-interval-matrix",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/batch_interval_matrix_raw.json",
+        "experiments/results/batch_interval_matrix_raw.csv"
+      ]
+    },
+    {
+      "id": "EXP-009",
+      "name": "Integrated Proof Cost Model & Duty Cycle Analysis",
+      "description": "Integrates empirical ZK benchmarks with multi-interval market simulation datasets to measure cryptographic load per cleared lot and real-time duty cycle.",
+      "command": "cpp/bin/faircross_bench proof-cost-model",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/proof_cost_model_report.json",
+        "experiments/results/proof_cost_model_table.csv"
+      ]
+    },
+    {
+      "id": "EXP-010",
+      "name": "Nasdaq TotalView-ITCH 5.0 Parsing & L3 Book Replay",
+      "description": "Tests binary ITCH 5.0 streaming parser, truncation fuzzing, and deterministic Level-3 order book BBO extraction. Covered by the gate's test suite rather than by a benchmark artifact.",
+      "command": "cpp/bin/faircross_tests",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": []
+    },
+    {
+      "id": "EXP-011",
+      "name": "Plaintext Engine Performance Profiling & Scaling",
+      "description": "Profiles execution latency (mean, p50, p90, p99) and order throughput across batch sizes.",
+      "command": "cpp/bin/faircross_bench engine-profile",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/plaintext_engine_profile.json",
+        "experiments/results/plaintext_engine_profile.csv"
+      ]
+    },
+    {
+      "id": "EXP-012",
+      "name": "Clearing Optimality Constraint Metrics",
+      "description": "Measures the candidate-price ladder and constraint growth of the clearing-optimality subrelation.",
+      "command": "cpp/bin/faircross_bench clearing-optimality",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/zk_clearing_optimality_metrics.json"
+      ]
+    },
+    {
+      "id": "EXP-013",
+      "name": "Auction Optimization Comparison",
+      "description": "Compares auction clearing implementations on the same batches to quantify the effect of the optimization on execution latency.",
+      "command": "cpp/bin/faircross_bench auction-optimization",
+      "hardware_requirements": "Commodity CPU",
+      "expected_outputs": [
+        "experiments/results/auction_optimization_comparison.json"
+      ]
+    }
+  ]
+}

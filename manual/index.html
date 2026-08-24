@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FairCross — Interactive Instruction Manual & Research Guide</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+            heading: ['"Plus Jakarta Sans"', 'Inter', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981', // Emerald
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              accent: '#06b6d4', // Cyan
+              indigo: '#6366f1',
+            },
+            dark: {
+              bg: '#090d16',
+              surface: '#0f172a',
+              card: '#141e33',
+              cardHover: '#1a2744',
+              border: '#1e293b',
+              borderHover: '#334155',
+              text: '#f8fafc',
+              textMuted: '#94a3b8',
+            }
+          },
+          boxShadow: {
+            'glow-emerald': '0 0 25px -5px rgba(16, 185, 129, 0.3)',
+            'glow-cyan': '0 0 25px -5px rgba(6, 182, 212, 0.3)',
+            'glow-indigo': '0 0 25px -5px rgba(99, 102, 241, 0.25)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* Glow utilities */
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Smooth transitions */
+    .focal-card {
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Code styling */
+    pre code {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Animations */
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 0.2; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.05); }
+    }
+    .animate-pulse-slow {
+      animation: pulse-slow 8s infinite ease-in-out;
+    }
+
+    /* Range slider custom styling */
+    input[type=range] {
+      accent-color: #10b981;
+    }
+  </style>
+</head>
+
+<body class="bg-dark-bg text-dark-text antialiased selection:bg-brand-500 selection:text-white min-h-screen flex flex-col font-sans transition-colors duration-300">
+
+  <!-- Subtle ambient background gradients -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-[20%] -left-[10%] w-[50vw] h-[50vw] rounded-full bg-brand-600/10 blur-[120px] animate-pulse-slow"></div>
+    <div class="absolute top-[40%] -right-[15%] w-[45vw] h-[45vw] rounded-full bg-brand-accent/10 blur-[140px] animate-pulse-slow" style="animation-delay: -3s;"></div>
+    <div class="absolute -bottom-[20%] left-[25%] w-[60vw] h-[60vw] rounded-full bg-brand-indigo/10 blur-[160px] animate-pulse-slow" style="animation-delay: -5s;"></div>
+  </div>
+
+  <!-- Top Global Navigation Bar -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-dark-border px-4 lg:px-8 py-3.5 flex items-center justify-between transition-all">
+    <div class="flex items-center space-x-4">
+      <button id="sidebarToggleBtn" class="lg:hidden p-2 rounded-lg text-dark-textMuted hover:text-white hover:bg-dark-surface transition" aria-label="Toggle Table of Contents">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+      </button>
+      
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="goToChapter(0, 0)">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-500 to-brand-accent flex items-center justify-center shadow-glow-emerald">
+          <span class="font-heading font-extrabold text-white text-base">FC</span>
+        </div>
+        <div>
+          <span class="font-heading font-bold text-lg text-white tracking-tight">Fair<span class="text-brand-400">Cross</span></span>
+          <span class="ml-2 px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider bg-brand-500/10 text-brand-300 border border-brand-500/20 rounded-full">v0.1 Research</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Chapter & Focal Point Indicator -->
+    <div class="hidden md:flex items-center space-x-3 bg-dark-card/80 border border-dark-border px-4 py-1.5 rounded-full text-xs text-dark-textMuted">
+      <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+      <span id="navChapterIndicator" class="font-medium text-white">Chapter 1: The Non-Technical Story</span>
+      <span class="text-dark-border">|</span>
+      <span id="navCardIndicator" class="font-mono text-brand-300">Focus 1 of 4</span>
+    </div>
+
+    <!-- Utility Actions -->
+    <div class="flex items-center space-x-2.5">
+      <!-- Search / Command Palette Shortcut -->
+      <button onclick="openSearchModal()" class="flex items-center space-x-2 text-xs bg-dark-surface hover:bg-dark-card border border-dark-border hover:border-brand-500/40 text-dark-textMuted hover:text-white px-3 py-1.5 rounded-lg transition">
+        <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <span class="hidden sm:inline">Search Guide</span>
+        <kbd class="hidden sm:inline font-mono text-[10px] bg-dark-card px-1.5 py-0.5 rounded border border-dark-border text-slate-400">⌘K</kbd>
+      </button>
+
+      <!-- Focus Mode Toggle (Single Card vs Continuous Flow) -->
+      <button id="focusModeToggle" onclick="toggleFocusMode()" class="flex items-center space-x-1.5 text-xs bg-brand-500/10 hover:bg-brand-500/20 border border-brand-500/30 text-brand-300 px-3 py-1.5 rounded-lg transition" title="Toggle Singular Focal Point View">
+        <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+        <span id="focusModeLabel" class="hidden sm:inline font-medium">Focus Mode: ON</span>
+      </button>
+
+      <!-- Quick Command Runner Modal Trigger -->
+      <button onclick="openCliRunnerModal()" class="flex items-center space-x-1.5 text-xs bg-brand-accent/10 hover:bg-brand-accent/20 border border-brand-accent/30 text-brand-accent px-3 py-1.5 rounded-lg transition">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+        <span class="hidden sm:inline font-medium">CLI Runner</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Reading Progress Bar -->
+  <div class="w-full bg-dark-border h-1 sticky top-[57px] z-40">
+    <div id="readingProgressBar" class="h-full bg-gradient-to-r from-brand-500 via-brand-accent to-brand-indigo transition-all duration-300" style="width: 14%;"></div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="flex-1 flex max-w-7xl w-full mx-auto relative z-10">
+    
+    <!-- Sidebar / Table of Contents -->
+    <aside id="sidebarNav" class="fixed lg:sticky top-[61px] left-0 h-[calc(100vh-61px)] w-80 bg-dark-surface/95 lg:bg-transparent p-5 border-r border-dark-border overflow-y-auto z-40 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 backdrop-blur-lg lg:backdrop-blur-none">
+      <div class="flex items-center justify-between mb-4 pb-2 border-b border-dark-border">
+        <h2 class="font-heading font-bold text-xs uppercase tracking-wider text-dark-textMuted flex items-center space-x-2">
+          <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+          <span>Table of Contents</span>
+        </h2>
+        <span class="text-[11px] font-mono text-dark-textMuted bg-dark-card px-2 py-0.5 rounded">7 Chapters</span>
+      </div>
+
+      <!-- Navigation Chapters List -->
+      <nav id="chaptersNavList" class="space-y-1.5">
+        <!-- Rendered dynamically by JS -->
+      </nav>
+
+      <!-- Interactive Playground Quick Links -->
+      <div class="mt-8 pt-5 border-t border-dark-border">
+        <h3 class="text-[11px] font-mono uppercase tracking-wider text-dark-textMuted mb-3">Live Interactive Labs</h3>
+        <div class="space-y-2">
+          <button onclick="goToChapter(3, 0)" class="w-full text-left px-3 py-2 rounded-lg bg-dark-card/60 hover:bg-dark-card hover:border-brand-500/30 border border-dark-border text-xs flex items-center justify-between group transition">
+            <span class="flex items-center space-x-2 text-slate-300 group-hover:text-brand-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-400"></span>
+              <span class="font-medium">Auction Simulator</span>
+            </span>
+            <span class="text-[10px] font-mono bg-brand-500/10 text-brand-400 px-1.5 py-0.5 rounded">Ch 4</span>
+          </button>
+          <button onclick="goToChapter(4, 0)" class="w-full text-left px-3 py-2 rounded-lg bg-dark-card/60 hover:bg-dark-card hover:border-red-500/30 border border-dark-border text-xs flex items-center justify-between group transition">
+            <span class="flex items-center space-x-2 text-slate-300 group-hover:text-red-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-red-400"></span>
+              <span class="font-medium">11-Vector Attack Lab</span>
+            </span>
+            <span class="text-[10px] font-mono bg-red-500/10 text-red-400 px-1.5 py-0.5 rounded">Ch 5</span>
+          </button>
+          <button onclick="goToChapter(5, 0)" class="w-full text-left px-3 py-2 rounded-lg bg-dark-card/60 hover:bg-dark-card hover:border-brand-accent/30 border border-dark-border text-xs flex items-center justify-between group transition">
+            <span class="flex items-center space-x-2 text-slate-300 group-hover:text-cyan-300">
+              <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
+              <span class="font-medium">Merkle & Running-State Visualizer</span>
+            </span>
+            <span class="text-[10px] font-mono bg-brand-accent/10 text-brand-accent px-1.5 py-0.5 rounded">Ch 6</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Command Cheat Sheet Card -->
+      <div class="mt-6 p-3.5 rounded-xl bg-dark-card/40 border border-dark-border text-xs">
+        <div class="font-mono text-[11px] text-brand-300 font-semibold mb-1 flex items-center space-x-1.5">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          <span>Run Verification Gate</span>
+        </div>
+        <code class="block font-mono text-[10px] bg-dark-bg p-2 rounded text-slate-300 border border-dark-border/80 select-all">./scripts/check.sh</code>
+      </div>
+    </aside>
+
+    <!-- Overlay backdrop for mobile sidebar -->
+    <div id="sidebarBackdrop" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+
+    <!-- Main Content Area: Focus Mode Singular Viewport -->
+    <main class="flex-1 min-w-0 p-4 sm:p-6 lg:p-10 flex flex-col justify-between max-w-4xl mx-auto">
+      
+      <!-- Focal Content Viewport -->
+      <div id="focalContainer" class="w-full">
+        <!-- Rendered dynamically by renderCurrentView() -->
+      </div>
+
+      <!-- Bottom Focal Navigation Controls -->
+      <footer class="mt-12 pt-6 border-t border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center space-x-2 text-xs text-dark-textMuted">
+          <span>Navigate with</span>
+          <kbd class="font-mono bg-dark-card px-2 py-1 rounded border border-dark-border text-white text-[11px]">← Prev</kbd>
+          <kbd class="font-mono bg-dark-card px-2 py-1 rounded border border-dark-border text-white text-[11px]">Next →</kbd>
+          <span>or click buttons:</span>
+        </div>
+
+        <div class="flex items-center space-x-3 w-full sm:w-auto justify-between sm:justify-end">
+          <button id="prevFocusBtn" onclick="prevFocusCard()" class="px-4 py-2.5 rounded-xl border border-dark-border bg-dark-card hover:bg-dark-cardHover text-xs font-semibold text-white flex items-center space-x-2 transition disabled:opacity-30 disabled:cursor-not-allowed">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+            <span>Previous Step</span>
+          </button>
+          
+          <button id="nextFocusBtn" onclick="nextFocusCard()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-500 to-brand-600 hover:from-brand-400 hover:to-brand-500 text-xs font-bold text-white flex items-center space-x-2 shadow-glow-emerald transition">
+            <span>Next Step</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+          </button>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <!-- Search Modal (Command Palette) -->
+  <div id="searchModal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-dark-surface border border-dark-border rounded-2xl max-w-lg w-full p-4 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      <div class="flex items-center space-x-3 pb-3 border-b border-dark-border">
+        <svg class="w-5 h-5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input id="searchInput" type="text" placeholder="Search chapters, concepts, CLI commands, attacks..." oninput="handleSearch(this.value)" class="bg-transparent text-sm text-white placeholder-dark-textMuted focus:outline-none w-full font-sans" autofocus />
+        <button onclick="closeSearchModal()" class="text-dark-textMuted hover:text-white text-xs px-2 py-1 bg-dark-card rounded">ESC</button>
+      </div>
+      
+      <div id="searchResults" class="mt-3 max-h-72 overflow-y-auto space-y-1">
+        <!-- Results rendered dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CLI Runner / Fixture Tester Modal -->
+  <div id="cliModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-dark-surface border border-dark-border rounded-2xl max-w-2xl w-full p-6 shadow-2xl overflow-hidden">
+      <div class="flex items-center justify-between pb-4 border-b border-dark-border">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-6 h-6 rounded bg-brand-500/20 text-brand-400 flex items-center justify-center font-mono text-xs">$_</div>
+          <h3 class="font-heading font-bold text-base text-white">FairCross CLI Command Generator</h3>
+        </div>
+        <button onclick="closeCliRunnerModal()" class="text-dark-textMuted hover:text-white p-1 rounded-lg hover:bg-dark-card">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+
+      <div class="mt-4 space-y-4">
+        <div>
+          <label class="block text-xs font-mono uppercase text-dark-textMuted mb-1.5">Select Command Mode</label>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            <button onclick="setCliModalCommand('run')" id="cliBtn_run" class="px-3 py-2 rounded-lg text-xs font-medium border bg-brand-500/20 border-brand-500 text-brand-300">faircross run</button>
+            <button onclick="setCliModalCommand('attack')" id="cliBtn_attack" class="px-3 py-2 rounded-lg text-xs font-medium border bg-dark-card border-dark-border text-slate-300 hover:border-slate-500">attack-matrix</button>
+            <button onclick="setCliModalCommand('prove')" id="cliBtn_prove" class="px-3 py-2 rounded-lg text-xs font-medium border bg-dark-card border-dark-border text-slate-300 hover:border-slate-500">prove (v0)</button>
+            <button onclick="setCliModalCommand('session')" id="cliBtn_session" class="px-3 py-2 rounded-lg text-xs font-medium border bg-dark-card border-dark-border text-slate-300 hover:border-slate-500">prove-session</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono uppercase text-dark-textMuted mb-1.5">Fixture / Manifest Target</label>
+          <select id="cliTargetSelect" onchange="updateCliOutputSnippet()" class="w-full bg-dark-card border border-dark-border rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brand-500">
+            <option value="fixtures/sample_batch.json">fixtures/sample_batch.json (4 orders, 100 ticks, crossed)</option>
+            <option value="fixtures/golden/01_normal_clearing.json">fixtures/golden/01_normal_clearing.json (Golden normal clearing)</option>
+            <option value="fixtures/golden/04_tie_price_interval.json">fixtures/golden/04_tie_price_interval.json (Midpoint tie-break)</option>
+            <option value="fixtures/golden/05_pro_rata_remainders.json">fixtures/golden/05_pro_rata_remainders.json (Hare-Niemeyer remainders)</option>
+            <option value="fixtures/sample_session.json">fixtures/sample_session.json (Multi-batch running-state audit manifest)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-mono uppercase text-dark-textMuted mb-1.5">Terminal Command to Copy & Run</label>
+          <div class="relative">
+            <pre id="cliCommandOutput" class="bg-dark-bg p-3.5 rounded-xl border border-dark-border font-mono text-xs text-brand-300 overflow-x-auto select-all">cpp/bin/faircross_cpp run fixtures/sample_batch.json</pre>
+            <button onclick="copyCliCommand()" id="copyCliBtn" class="absolute right-2.5 top-2.5 bg-dark-card hover:bg-dark-cardHover border border-dark-border text-xs px-2.5 py-1 rounded text-slate-300 hover:text-white transition">Copy</button>
+          </div>
+        </div>
+
+        <div class="p-3 bg-dark-card/50 rounded-xl border border-dark-border text-xs text-dark-textMuted">
+          <span class="text-white font-medium">Expected Result:</span>
+          <p id="cliExpectedDesc" class="mt-1">Executes discrete frequent batch matching, prints clearing price & volume, outputs verified canonical fills, and performs independent multi-invariant checks.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Javascript Core Engine & Content Database -->
+  <script>
+    /* ==========================================================================
+       1. DATA MODEL: CHAPTERS & FOCAL CARDS
+       ========================================================================== */
+    const CHAPTERS = [
+      {
+        id: "intro-non-technical",
+        title: "Chapter 1: The Non-Technical Story",
+        subtitle: "What is FairCross & Why Does It Matter?",
+        readTime: "4 min",
+        cards: [
+          {
+            title: "The Dilemma of Modern Financial Markets",
+            badge: "The Problem",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-base mb-4">
+                Imagine you want to buy 10,000 shares of a company. If you submit that order to a regular public exchange, ultra-fast automated trading computers (<strong class="text-white">High-Frequency Traders / HFTs</strong>) see your order in microseconds, race ahead of you to buy the shares cheaper, and sell them back to you at a higher price. This is known as <strong class="text-brand-400">latency arbitrage</strong>.
+              </p>
+              <div class="grid sm:grid-cols-2 gap-4 my-6">
+                <div class="p-4 rounded-xl bg-dark-card border border-red-500/20">
+                  <div class="text-xs font-mono uppercase text-red-400 font-semibold mb-1">Public Continuous Markets</div>
+                  <h4 class="font-bold text-white text-sm mb-1.5">The Speed Race</h4>
+                  <p class="text-xs text-slate-400">Orders are matched continuously microsecond-by-microsecond. The fastest participant always wins, creating unfair predatory front-running.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-dark-card border border-amber-500/20">
+                  <div class="text-xs font-mono uppercase text-amber-400 font-semibold mb-1">Private Dark Pools</div>
+                  <h4 class="font-bold text-white text-sm mb-1.5">The Trust Paradox</h4>
+                  <p class="text-xs text-slate-400">Orders are hidden from the public, but you must blindly trust the exchange operator not to secretly front-run, favor friends, or cheat on prices.</p>
+                </div>
+              </div>
+              <p class="text-slate-300 leading-relaxed text-sm">
+                Traders tried escaping to private "dark pools" to hide their orders, but dark pools created an even bigger issue: <em>How do you know the dark pool operator isn't secretly cheating behind closed doors?</em>
+              </p>
+            `
+          },
+          {
+            title: "Enter FairCross: The Blind Auction in a Glass Safe",
+            badge: "The Solution",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-base mb-4">
+                <strong class="text-brand-400 font-semibold">FairCross</strong> solves both problems simultaneously using two breakthrough principles: <strong class="text-white">Discrete Frequent Batches</strong> and <strong class="text-white">Cryptographic Procedural Fairness</strong>.
+              </p>
+              <div class="p-5 rounded-2xl bg-gradient-to-br from-brand-500/10 via-dark-card to-dark-surface border border-brand-500/30 my-6">
+                <h4 class="font-heading font-bold text-white text-base mb-2 flex items-center space-x-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-brand-400"></span>
+                  <span>The Analogy: A Glass Safe with a Mathematical Referee</span>
+                </h4>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                  Instead of matching orders in continuous microseconds, FairCross groups all orders submitted within a fixed time window (e.g. 100 milliseconds) into a single batch.
+                </p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-4 text-xs">
+                  <div class="p-3 rounded-lg bg-dark-bg/60 border border-dark-border">
+                    <strong class="text-brand-300 block mb-1">1. Sealed Box</strong>
+                    <span class="text-slate-400">Orders are placed into a digital sealed envelope and locked in a glass safe (Merkle Root).</span>
+                  </div>
+                  <div class="p-3 rounded-lg bg-dark-bg/60 border border-dark-border">
+                    <strong class="text-brand-accent block mb-1">2. Single Fair Price</strong>
+                    <span class="text-slate-400">All envelopes open at once. A single clearing price is calculated to maximize trade volume for everyone equally.</span>
+                  </div>
+                  <div class="p-3 rounded-lg bg-dark-bg/60 border border-dark-border">
+                    <strong class="text-brand-indigo block mb-1">3. Cryptographic Receipt</strong>
+                    <span class="text-slate-400">The referee publishes a deterministic commitment and a transparent in-process R1CS satisfiability certificate. It is not zero-knowledge and does not hide order amounts.</span>
+                  </div>
+                </div>
+              </div>
+              <p class="text-slate-300 leading-relaxed text-sm">
+                With FairCross, being 1 millisecond faster gives you zero advantage. Every step is bound to deterministic commitments and can be checked against the published rules.
+              </p>
+            `
+          },
+          {
+            title: "The 5 Pillars of Procedural Fairness",
+            badge: "Guarantees",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-5">
+                FairCross makes five procedural rules explicit and mechanically checkable in the engine and audit harness:
+              </p>
+              <div class="space-y-3">
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3.5">
+                  <div class="w-6 h-6 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">1</div>
+                  <div>
+                    <strong class="text-white text-sm block">Complete Order Accounting</strong>
+                    <p class="text-xs text-slate-400 mt-0.5">Every submitted order is accounted for. The operator cannot secretly drop an order or cherry-pick who gets to trade.</p>
+                  </div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3.5">
+                  <div class="w-6 h-6 rounded-full bg-brand-accent/20 text-brand-accent flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
+                  <div>
+                    <strong class="text-white text-sm block">Deterministic Single Clearing Price</strong>
+                    <p class="text-xs text-slate-400 mt-0.5">There is only one uniform market price per batch. If there's a tie, it splits exactly in the middle ($P^* = \\lfloor (P_{min} + P_{max}) / 2 \\rfloor$).</p>
+                  </div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3.5">
+                  <div class="w-6 h-6 rounded-full bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">3</div>
+                  <div>
+                    <strong class="text-white text-sm block">Strict Pro-Rata Equal Allocation</strong>
+                    <p class="text-xs text-slate-400 mt-0.5">When demand exceeds supply, shares are divided mathematically (Hare-Niemeyer largest remainder). No preferential treatment for big banks.</p>
+                  </div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3.5">
+                  <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">4</div>
+                  <div>
+                    <strong class="text-white text-sm block">Conservation of Money & Inventory</strong>
+                    <p class="text-xs text-slate-400 mt-0.5">Total cash and assets before trading must exactly equal total cash and assets after trading. No money can be minted or stolen.</p>
+                  </div>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3.5">
+                  <div class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">5</div>
+                  <div>
+                    <strong class="text-white text-sm block">Transparent R1CS Satisfiability Check</strong>
+                    <p class="text-xs text-slate-400 mt-0.5">The in-process harness synthesizes and checks the relation locally. Its formatted certificate is a research artifact, not a zero-knowledge or remote proof.</p>
+                  </div>
+                </div>
+              </div>
+            `
+          },
+          {
+            title: "Summary: Who Is FairCross Built For?",
+            badge: "Takeaways",
+            content: `
+              <div class="p-5 rounded-2xl bg-dark-card border border-dark-border space-y-4">
+                <h4 class="font-heading font-bold text-white text-base">Key Insights for Anyone Exploring FairCross:</h4>
+                <ul class="space-y-2.5 text-xs sm:text-sm text-slate-300">
+                  <li class="flex items-start space-x-2">
+                    <span class="text-brand-400 font-bold">✓</span>
+                    <span><strong>Research-Grade Financial Architecture:</strong> Built in pure C++20 with no third-party dependencies and zero floating-point arithmetic in exchange state.</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-brand-400 font-bold">✓</span>
+                    <span><strong>No Blockchain Required:</strong> Operates as a standalone exchange engine or private dark pool with deterministic commitments and replayable audit artifacts.</span>
+                  </li>
+                  <li class="flex items-start space-x-2">
+                    <span class="text-brand-400 font-bold">✓</span>
+                    <span><strong>Adversarially Exercised:</strong> One honest control plus 11 malicious operator mutations are recorded; all 11 malicious cases are rejected by the invariant checker.</span>
+                  </li>
+                </ul>
+                <div class="pt-3 border-t border-dark-border flex items-center justify-between">
+                  <span class="text-xs text-dark-textMuted">Ready to learn how the code works?</span>
+                  <button onclick="goToChapter(1, 0)" class="text-xs font-bold text-brand-300 hover:text-brand-200 flex items-center space-x-1">
+                    <span>Proceed to Chapter 2: Architecture</span>
+                    <span>→</span>
+                  </button>
+                </div>
+              </div>
+            `
+          }
+        ]
+      },
+      {
+        id: "architecture-invariants",
+        title: "Chapter 2: Architecture & Invariants",
+        subtitle: "The 8-Module Architecture &amp; Mathematical Rules",
+        readTime: "5 min",
+        cards: [
+          {
+            title: "The 8-Module Architecture",
+            badge: "System Design",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                FairCross is structured into 8 modules with strictly enforced dependency boundaries and zero cyclical references:
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-brand-400 font-bold mb-1">faircross::domain</div>
+                  <p class="text-slate-400">Strict integer types: <code>Price</code>, <code>Qty</code>, <code>Money</code>, <code>Order</code>, <code>AccountState</code>, <code>Ledger</code>. Checked arithmetic with no floats.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-brand-accent font-bold mb-1">faircross::engine</div>
+                  <p class="text-slate-400">Deterministic auction clearing, demand/supply aggregation, integer midpoint tie-breaking, pro-rata allocation, and invariant checker.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-indigo-400 font-bold mb-1">faircross::commitments</div>
+                  <p class="text-slate-400">Domain-separated salted order preimages, SHA-256 binary Merkle batch trees, batch headers, and complete-input accounting.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-purple-400 font-bold mb-1">faircross::proof</div>
+                  <p class="text-slate-400">Transparent in-process R1CS constraint synthesis and satisfiability checks for the single-batch relation; the emitted certificate is not zero-knowledge or a remote proof.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-red-400 font-bold mb-1">faircross::adversary</div>
+                  <p class="text-slate-400">Isolated malicious-operator harness with one honest control plus 11 mutations; every malicious case is rejected by the current checker.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-emerald-400 font-bold mb-1">faircross::simulator</div>
+                  <p class="text-slate-400">Synthetic market-maker and noise-trader agents, five intervals (10/50/100/250/500 ms), three fixed seeds, and market-quality metrics.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-amber-400 font-bold mb-1">faircross::marketdata</div>
+                  <p class="text-slate-400">Bounded Nasdaq TotalView-ITCH 5.0 binary parsing, deterministic Level-3 order-book replay, and signed oracle reference-price collar checks.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <div class="font-mono text-cyan-400 font-bold mb-1">faircross::cli</div>
+                  <p class="text-slate-400">Unified CLI interface exposing <code>run</code>, <code>attack-matrix</code>, <code>prove</code>, and <code>prove-session</code> subcommands.</p>
+                </div>
+              </div>
+            `
+          },
+          {
+            title: "Invariant 1: Zero Floating-Point Arithmetic",
+            badge: "Precision & Determinism",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                Floating-point numbers (<code>f32</code> / <code>f64</code>) are strictly forbidden across the entire FairCross codebase. Float operations suffer from rounding drift, non-associativity ($a + (b + c) \\ne (a + b) + c$), and platform-dependent instruction sets.
+              </p>
+              <div class="p-4 rounded-xl bg-dark-card border border-dark-border space-y-3 font-mono text-xs">
+                <div class="flex justify-between items-center text-slate-400 pb-2 border-b border-dark-border">
+                  <span>Domain Type</span>
+                  <span>Internal Representation</span>
+                  <span>Safety Policy</span>
+                </div>
+                <div class="flex justify-between items-center text-white">
+                  <span class="text-brand-300">Price</span>
+                  <span><code>uint64_t</code> (ticks &gt; 0)</span>
+                  <span class="text-emerald-400">Checked arithmetic</span>
+                </div>
+                <div class="flex justify-between items-center text-white">
+                  <span class="text-brand-300">Qty</span>
+                  <span><code>uint64_t</code> (lots &gt; 0)</span>
+                  <span class="text-emerald-400">Checked accumulation</span>
+                </div>
+                <div class="flex justify-between items-center text-white">
+                  <span class="text-brand-300">Money</span>
+                  <span><code>unsigned __int128</code> (smallest units)</span>
+                  <span class="text-emerald-400">Zero overflow tolerance</span>
+                </div>
+              </div>
+              <div class="mt-4 p-3 bg-brand-500/10 rounded-lg border border-brand-500/20 text-xs text-brand-300">
+                <strong>Enforced by the build gate:</strong> <code>-Wall -Wextra -Wpedantic -Wconversion -Wshadow</code> with warnings treated as defects, plus ASan and UBSan over the whole test suite.
+              </div>
+            `
+          },
+          {
+            title: "Invariant 2: Maximum Volume & Integer Midpoint Clearing",
+            badge: "Clearing Rules",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-3">
+                Clearing price selection in FairCross follows a pure, deterministic two-phase algorithm:
+              </p>
+              <div class="space-y-3 text-xs">
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <strong class="text-brand-400 text-sm block mb-1">Step 1: Volume Maximization</strong>
+                  <p class="text-slate-400">Executable demand $D(p) = \\sum_{b.price \\ge p} b.qty$ and supply $S(p) = \\sum_{s.price \\le p} s.qty$ are evaluated across all candidate prices $\\mathcal{P}_{cand}$. The maximum executable volume is $V^* = \\max_p \\min(D(p), S(p))$.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <strong class="text-brand-accent text-sm block mb-1">Step 2: Symmetrical Integer Midpoint Tie-Breaker</strong>
+                  <p class="text-slate-400">If multiple prices achieve $V^*$, let $P_{min}$ and $P_{max}$ be the lowest and highest maximizing prices. The unique uniform clearing price is the exact integer midpoint: <code class="text-brand-300">P* = floor((P_min + P_max) / 2)</code>.</p>
+                </div>
+              </div>
+              <p class="text-slate-400 text-xs mt-3">
+                This rule completely splits economic surplus evenly between buyers and sellers and is 100% order-permutation invariant.
+              </p>
+            `
+          },
+          {
+            title: "Invariant 3: Hare-Niemeyer Pro-Rata Allocation",
+            badge: "Allocation Rules",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-3">
+                When volume is cleared, orders are partitioned into three moneyness tiers:
+              </p>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs mb-4">
+                <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
+                  <strong class="block mb-0.5">In-The-Money (ITM)</strong>
+                  <span>$P_{buy} > P^*$, $P_{sell} < P^*$. Filled 100% (Strict price priority).</span>
+                </div>
+                <div class="p-3 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-cyan-300">
+                  <strong class="block mb-0.5">At-The-Money (ATM)</strong>
+                  <span>$P = P^*$. Allocated via Hare-Niemeyer largest-remainder pro-rata.</span>
+                </div>
+                <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300">
+                  <strong class="block mb-0.5">Out-Of-The-Money (OTM)</strong>
+                  <span>$P_{buy} < P^*$, $P_{sell} > P^*$. Filled 0%.</span>
+                </div>
+              </div>
+              <div class="p-3.5 bg-dark-card rounded-xl border border-dark-border text-xs text-slate-300">
+                <strong class="text-white block mb-1">Hare-Niemeyer Integer Formula:</strong>
+                <span>Base fill: $base_i = \\lfloor (q_i \\cdot V_{rem}) / Q_{atm} \\rfloor$, Remainder: $rem_i = (q_i \\cdot V_{rem}) \\pmod{Q_{atm}}$.</span>
+                <p class="text-slate-400 mt-1">Undistributed leftover lots $R = V_{rem} - \\sum base_i$ are assigned 1 lot each to the highest $rem_i$, breaking ties deterministically by $(seq_i \\text{ asc}, id_i \\text{ asc})$.</p>
+              </div>
+            `
+          }
+        ]
+      },
+      {
+        id: "technical-usage-guide",
+        title: "Chapter 3: Technical Usage Guide",
+        subtitle: "How to Build, Test, and Execute FairCross CLI",
+        readTime: "6 min",
+        cards: [
+          {
+            title: "Prerequisites & Workspace Verification",
+            badge: "Quickstart",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                To use FairCross, you only need a C++20 compiler (<code>clang++</code> or <code>g++</code>) and <code>make</code>:
+              </p>
+              <div class="space-y-3">
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <span class="text-xs font-mono uppercase text-brand-400 font-semibold block mb-1.5">1. Run Full Verification Gate</span>
+                  <pre class="bg-dark-bg p-2.5 rounded font-mono text-xs text-brand-300 border border-dark-border select-all">./scripts/check.sh</pre>
+                  <p class="text-xs text-slate-400 mt-1.5">Verifies the frozen golden vectors, builds under ASan and UBSan, and runs all unit and property tests.</p>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <span class="text-xs font-mono uppercase text-brand-accent font-semibold block mb-1.5">2. Build and Run the Test Suite</span>
+                  <pre class="bg-dark-bg p-2.5 rounded font-mono text-xs text-cyan-300 border border-dark-border select-all">cd cpp &amp;&amp; make -j4 &amp;&amp; ./bin/faircross_tests</pre>
+                  <p class="text-xs text-slate-400 mt-1.5">Executes the current 57-test suite, golden fixtures, and transparent R1CS satisfiability checks.</p>
+                </div>
+              </div>
+            `
+          },
+          {
+            title: "Command 1: Plaintext Batch Execution (`faircross run`)",
+            badge: "CLI Commands",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-3">
+                Executes a discrete batch matching fixture through the deterministic clearing engine and audits all transition invariants:
+              </p>
+              <pre class="bg-dark-bg p-3.5 rounded-xl font-mono text-xs text-brand-300 border border-dark-border select-all mb-3">cpp/bin/faircross_cpp run fixtures/sample_batch.json</pre>
+              <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border text-xs space-y-2">
+                <div class="font-semibold text-white">What this command does:</div>
+                <ul class="space-y-1 text-slate-400">
+                  <li>• Reads starting accounts (<code class="text-slate-300">pre_state</code>) and batch orders.</li>
+                  <li>• Calculates optimal clearing price ($P^* = 100$) and volume ($V^* = 35$).</li>
+                  <li>• Computes allocations and generates atomic fill events.</li>
+                  <li>• Executes <code class="text-brand-400">verify_transition()</code> checking balance conservation and price limits.</li>
+                </ul>
+              </div>
+            `
+          },
+          {
+            title: "Command 2: Adversarial Attack Matrix (`faircross attack-matrix`)",
+            badge: "Security Evaluation",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-3">
+                Evaluates a fixture against one honest control and the entire suite of 11 malicious operator mutations:
+              </p>
+              <pre class="bg-dark-bg p-3.5 rounded-xl font-mono text-xs text-red-300 border border-dark-border select-all mb-3">cpp/bin/faircross_cpp attack-matrix fixtures/sample_batch.json</pre>
+              <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border text-xs">
+                  <div class="text-white font-medium mb-1.5">One Honest Control + 11 Malicious Cases:</div>
+                <div class="grid grid-cols-2 gap-2 text-[11px] font-mono text-slate-400">
+                  <div>1. Omitted Order Censorship</div>
+                  <div>2. Clearing Price Inflation</div>
+                  <div>3. Clearing Price Deflation</div>
+                  <div>4. Overfill Manipulation</div>
+                  <div>5. Preferential Allocation</div>
+                  <div>6. Limit Price Violation</div>
+                  <div>7. Frozen Post-State</div>
+                  <div>8. Cash Minting Attack</div>
+                  <div>9. Asset Minting Attack</div>
+                  <div>10. Commitment Leaf Spoofing</div>
+                  <div>11. Stale Oracle Snapshot</div>
+                  <div>Control. Honest Execution (passes)</div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-dark-border text-emerald-400 font-semibold">
+                  Result: 11/11 malicious cases rejected; the honest control passes.
+                </div>
+              </div>
+            `
+          },
+          {
+            title: "Command 3 & 4: Transparent Checks (`prove` & `prove-session`)",
+            badge: "R1CS & Running-State Audit",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-3">
+                Run the transparent in-process R1CS satisfiability harness and the native SHA-256 running-state audit:
+              </p>
+              <div class="space-y-3">
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <span class="text-xs font-mono uppercase text-brand-400 font-semibold block mb-1">Single-Batch R1CS Satisfiability Check:</span>
+                  <pre class="bg-dark-bg p-2.5 rounded font-mono text-xs text-brand-300 border border-dark-border select-all">cpp/bin/faircross_cpp prove fixtures/sample_batch.json --verify</pre>
+                </div>
+                <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
+                  <span class="text-xs font-mono uppercase text-brand-accent font-semibold block mb-1">Multi-Batch Running-State Audit with Verifier Replay:</span>
+                  <pre class="bg-dark-bg p-2.5 rounded font-mono text-xs text-cyan-300 border border-dark-border select-all">cpp/bin/faircross_cpp prove-session fixtures/sample_session.json --verify</pre>
+                </div>
+              </div>
+            `
+          }
+        ]
+      },
+      {
+        id: "interactive-auction-simulator",
+        title: "Chapter 4: Interactive Auction Simulator",
+        subtitle: "Live Demand/Supply Curves & Clearing Price Visualizer",
+        readTime: "Interactive",
+        cards: [
+          {
+            title: "Live Frequent-Batch Clearing Engine",
+            badge: "Interactive Lab",
+            content: `
+              <div class="space-y-5">
+                <p class="text-slate-300 text-sm">
+                  Add or modify orders below to watch FairCross compute executable demand $D(p)$, supply $S(p)$, maximum crossing volume $V^*$, and integer midpoint tie-breaks in real-time:
+                </p>
+
+                <!-- Interactive Simulator Component -->
+                <div class="p-4 sm:p-5 rounded-2xl bg-dark-card border border-dark-border space-y-5">
+                  <!-- Presets -->
+                  <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-dark-border">
+                    <span class="text-xs font-mono uppercase text-dark-textMuted">Load Test Scenario:</span>
+                    <div class="flex flex-wrap gap-2">
+                      <button onclick="loadSimPreset('normal')" class="px-2.5 py-1 rounded bg-brand-500/20 text-brand-300 border border-brand-500/30 text-xs font-medium hover:bg-brand-500/30 transition">1. Normal Crossing</button>
+                      <button onclick="loadSimPreset('tie')" class="px-2.5 py-1 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-xs font-medium hover:bg-indigo-500/30 transition">2. Price Tie Plateau</button>
+                      <button onclick="loadSimPreset('prorata')" class="px-2.5 py-1 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 text-xs font-medium hover:bg-cyan-500/30 transition">3. Pro-Rata Remainder</button>
+                      <button onclick="loadSimPreset('nocross')" class="px-2.5 py-1 rounded bg-slate-700/50 text-slate-300 border border-slate-600 text-xs font-medium hover:bg-slate-700 transition">4. No Crossing</button>
+                    </div>
+                  </div>
+
+                  <!-- Orders Table & Controls -->
+                  <div>
+                    <div class="flex items-center justify-between mb-2">
+                      <span class="text-xs font-semibold text-white uppercase tracking-wider">Active Batch Orders</span>
+                      <button onclick="addSimOrder()" class="px-2.5 py-1 bg-dark-surface hover:bg-dark-border text-brand-400 border border-brand-500/30 text-xs rounded-lg transition font-medium flex items-center space-x-1">
+                        <span>+ Add Order</span>
+                      </button>
+                    </div>
+                    
+                    <div class="overflow-x-auto max-h-48 overflow-y-auto">
+                      <table class="w-full text-xs text-left">
+                        <thead class="text-dark-textMuted bg-dark-surface font-mono">
+                          <tr>
+                            <th class="p-2">ID</th>
+                            <th class="p-2">Side</th>
+                            <th class="p-2">Limit Price (ticks)</th>
+                            <th class="p-2">Quantity (lots)</th>
+                            <th class="p-2 text-right">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="simOrdersTableBody" class="divide-y divide-dark-border">
+                          <!-- Populated dynamically -->
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- Live Canvas Chart for Demand & Supply Curves -->
+                  <div class="bg-dark-bg p-4 rounded-xl border border-dark-border">
+                    <div class="flex items-center justify-between mb-2 text-xs">
+                      <span class="font-mono text-slate-300 font-semibold">Demand D(p) vs Supply S(p) Step Curves</span>
+                      <div class="flex items-center space-x-4">
+                        <span class="flex items-center space-x-1 text-emerald-400"><span class="w-2.5 h-0.5 bg-emerald-400 inline-block"></span> <span>Demand D(p)</span></span>
+                        <span class="flex items-center space-x-1 text-cyan-400"><span class="w-2.5 h-0.5 bg-cyan-400 inline-block"></span> <span>Supply S(p)</span></span>
+                        <span class="flex items-center space-x-1 text-amber-400"><span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span> <span>Clearing P*</span></span>
+                      </div>
+                    </div>
+                    <canvas id="simAuctionCanvas" width="700" height="220" class="w-full h-52 bg-dark-surface rounded-lg"></canvas>
+                  </div>
+
+                  <!-- Live Clearing Results Dashboard -->
+                  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+                    <div class="p-3 bg-dark-bg rounded-xl border border-dark-border">
+                      <span class="text-[10px] font-mono uppercase text-dark-textMuted block">Clearing Price</span>
+                      <span id="simResPrice" class="text-lg font-bold text-amber-400 font-mono">100 ticks</span>
+                    </div>
+                    <div class="p-3 bg-dark-bg rounded-xl border border-dark-border">
+                      <span class="text-[10px] font-mono uppercase text-dark-textMuted block">Cleared Volume</span>
+                      <span id="simResVol" class="text-lg font-bold text-emerald-400 font-mono">35 lots</span>
+                    </div>
+                    <div class="p-3 bg-dark-bg rounded-xl border border-dark-border">
+                      <span class="text-[10px] font-mono uppercase text-dark-textMuted block">Cash Conserved</span>
+                      <span id="simResCash" class="text-lg font-bold text-brand-300 font-mono">100% Exact</span>
+                    </div>
+                    <div class="p-3 bg-dark-bg rounded-xl border border-dark-border">
+                      <span class="text-[10px] font-mono uppercase text-dark-textMuted block">Invariant Status</span>
+                      <span id="simResStatus" class="text-lg font-bold text-brand-400 font-mono">PASSED</span>
+                    </div>
+                  </div>
+
+                  <!-- Allocation Details -->
+                  <div class="p-3.5 bg-dark-bg rounded-xl border border-dark-border text-xs">
+                    <div class="font-semibold text-white mb-2">Fills & Allocation Breakdown:</div>
+                    <div id="simAllocationsList" class="space-y-1 text-slate-300 font-mono text-[11px]">
+                      <!-- Populated dynamically -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `
+          }
+        ]
+      },
+      {
+        id: "adversarial-attack-lab",
+        title: "Chapter 5: Adversarial Attack Lab",
+        subtitle: "Interactive Simulation of Representative Operator Attacks",
+        readTime: "Interactive",
+        cards: [
+          {
+            title: "Simulate & Reject Adversarial Attacks",
+            badge: "Interactive Lab",
+            content: `
+              <div class="space-y-5">
+                <p class="text-slate-300 text-sm">
+                  FairCross treats the exchange operator as untrusted. Select an attack below to attempt to corrupt the batch transition, and watch the invariant checker and transparent R1CS harness reject it:
+                </p>
+
+                <!-- Attack Selector Matrix -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+                  <button onclick="runSimAttack('omitted_order')" class="p-3 rounded-xl bg-dark-card hover:bg-dark-cardHover border border-dark-border text-left group transition">
+                    <div class="text-xs font-mono font-bold text-red-400 group-hover:text-red-300">1. Order Censorship</div>
+                    <p class="text-[11px] text-dark-textMuted mt-0.5">Operator silently drops an eligible buy order to favor a friend.</p>
+                  </button>
+                  <button onclick="runSimAttack('price_inflation')" class="p-3 rounded-xl bg-dark-card hover:bg-dark-cardHover border border-dark-border text-left group transition">
+                    <div class="text-xs font-mono font-bold text-amber-400 group-hover:text-amber-300">2. Price Inflation</div>
+                    <p class="text-[11px] text-dark-textMuted mt-0.5">Operator sets clearing price higher than volume-maximizing price.</p>
+                  </button>
+                  <button onclick="runSimAttack('overfill')" class="p-3 rounded-xl bg-dark-card hover:bg-dark-cardHover border border-dark-border text-left group transition">
+                    <div class="text-xs font-mono font-bold text-red-400 group-hover:text-red-300">3. Overfill Attack</div>
+                    <p class="text-[11px] text-dark-textMuted mt-0.5">Operator fills an order for 99,999 lots when only 20 were submitted.</p>
+                  </button>
+                  <button onclick="runSimAttack('preferential_alloc')" class="p-3 rounded-xl bg-dark-card hover:bg-dark-cardHover border border-dark-border text-left group transition">
+                    <div class="text-xs font-mono font-bold text-purple-400 group-hover:text-purple-300">4. Preferential Allocation</div>
+                    <p class="text-[11px] text-dark-textMuted mt-0.5">Operator preserves volume conservation but skews fills to favored cartel.</p>
+                  </button>
+                  <button onclick="runSimAttack('cash_minting')" class="p-3 rounded-xl bg-dark-card hover:bg-dark-cardHover border border-dark-border text-left group transition">
+                    <div class="text-xs font-mono font-bold text-emerald-400 group-hover:text-emerald-300">5. Cash Minting</div>
+                    <p class="text-[11px] text-dark-textMuted mt-0.5">Operator secretly adds +$10,000 into their own account out of thin air.</p>
+                  </button>
+                  <button onclick="runSimAttack('stale_oracle')" class="p-3 rounded-xl bg-dark-card hover:bg-dark-cardHover border border-dark-border text-left group transition">
+                    <div class="text-xs font-mono font-bold text-cyan-400 group-hover:text-cyan-300">6. Stale Oracle Reference</div>
+                    <p class="text-[11px] text-dark-textMuted mt-0.5">Operator applies an authentic oracle price that is 1ns beyond max staleness.</p>
+                  </button>
+                </div>
+
+                <!-- Attack Execution Terminal Simulation -->
+                <div class="p-4 rounded-xl bg-dark-bg border border-dark-border space-y-3 font-mono text-xs">
+                  <div class="flex items-center justify-between pb-2 border-b border-dark-border text-dark-textMuted">
+                    <span id="attackTermTitle">Selected Vector: 1. Order Censorship (Omission)</span>
+                    <span id="attackTermBadge" class="px-2 py-0.5 rounded bg-red-500/20 text-red-400 text-[10px] font-bold">ATTACK DETECTED</span>
+                  </div>
+                  
+                  <div class="space-y-1.5 text-slate-300">
+                    <div><span class="text-dark-textMuted">Adversary Action:</span> <span id="attackTermAction" class="text-amber-300">Omitted Order ID 1 from batch execution manifest</span></div>
+                    <div><span class="text-dark-textMuted">Invariant Engine:</span> <span id="attackTermInv" class="text-red-400">FAILED: TotalCountMismatch (expected 4, got 3)</span></div>
+                    <div><span class="text-dark-textMuted">R1CS Satisfiability Check:</span> <span id="attackTermR1cs" class="text-red-400">UNSAT: complete-input accounting constraint breached</span></div>
+                    <div><span class="text-dark-textMuted">State Transition:</span> <span id="attackTermState" class="text-emerald-400 font-bold">ABORTED (No accepted state transition)</span></div>
+                  </div>
+
+                  <div class="p-3 bg-dark-surface rounded border border-dark-border text-[11px] text-slate-400">
+                    <strong class="text-white block mb-0.5">Audit Evidence:</strong>
+                    <span id="attackTermAuditDesc">The published Merkle root binds all 4 submitted orders. The in-process accounting relation requires an authentic Merkle path for each leaf (0..3). Since leaf 0 was omitted, the local satisfiability check fails.</span>
+                  </div>
+                </div>
+              </div>
+            `
+          }
+        ]
+      },
+      {
+        id: "cryptography-audit",
+        title: "Chapter 6: Commitments & Running-State Audit",
+        subtitle: "Merkle Trees, Transparent R1CS & SHA-256 State Chaining",
+        readTime: "5 min",
+        cards: [
+          {
+            title: "The Cryptographic Pipeline: From Preimages to Roots",
+            badge: "Cryptographic Design",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                FairCross uses a domain-separated cryptographic architecture that isolates market semantics from proving backends:
+              </p>
+              <div class="p-4 rounded-xl bg-dark-card border border-dark-border space-y-4 text-xs font-mono">
+                <div class="flex items-center space-x-3">
+                  <span class="w-8 h-8 rounded bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold">1</span>
+                  <div class="flex-1">
+                    <strong class="text-white block font-sans">Salted Order Preimage (86 bytes)</strong>
+                    <span class="text-slate-400"><code>[4B "FCOR"] || [1B ver] || [8B id] || [8B account] || [8B price] || [8B qty] || [32B salt]</code></span>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span class="w-8 h-8 rounded bg-brand-accent/20 text-brand-accent flex items-center justify-center font-bold">2</span>
+                  <div class="flex-1">
+                    <strong class="text-white block font-sans">Binary Merkle Batch Tree</strong>
+                    <span class="text-slate-400">Leaves are sorted strictly by intake sequence <code>seq</code>. Combined via $H(\text{"FC_NODE_"} \parallel L \parallel R)$ with empty sentinels.</span>
+                  </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                  <span class="w-8 h-8 rounded bg-indigo-500/20 text-indigo-400 flex items-center justify-center font-bold">3</span>
+                  <div class="flex-1">
+                    <strong class="text-white block font-sans">Batch Header Commitment (69 bytes)</strong>
+                    <span class="text-slate-400">Binds <code>version</code>, <code>batch_id</code>, <code>instrument_id</code>, <code>cutoff_timestamp</code>, <code>order_count</code>, and <code>orders_root</code>.</span>
+                  </div>
+                </div>
+              </div>
+            `
+          },
+          {
+            title: "Running-State Accumulator: K=50 Storage Comparison",
+            badge: "Native SHA-256 Accumulator",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                FairCross chains each accepted step with a native SHA-256 running-state accumulator. The verifier replays the individual step certificates and checks ledger-root continuity; this is not recursive IVC and verification is not constant-time.
+              </p>
+              <div class="grid sm:grid-cols-2 gap-4 my-4">
+                <div class="p-4 rounded-xl bg-dark-card border border-dark-border">
+                  <span class="text-xs font-mono uppercase text-dark-textMuted block mb-1">Independent Step Records</span>
+                  <div class="text-lg font-bold text-red-400 font-mono mb-1">2,800 bytes at K=50</div>
+                  <p class="text-xs text-slate-400">The recorded comparison stores each of the 50 individual step records.</p>
+                </div>
+                <div class="p-4 rounded-xl bg-dark-card border border-brand-500/30 bg-brand-500/5">
+                  <span class="text-xs font-mono uppercase text-brand-400 block mb-1">Native Accumulator Record</span>
+                  <div class="text-lg font-bold text-emerald-400 font-mono mb-1">122 bytes at K=50</div>
+                  <p class="text-xs text-slate-400">The compact record summarizes the running state; the verifier still replays all 50 step records.</p>
+                </div>
+              </div>
+              <div class="p-3.5 bg-dark-card rounded-xl border border-dark-border text-xs text-slate-300 font-mono">
+                <div class="flex justify-between items-center text-slate-400 pb-1.5 border-b border-dark-border">
+                  <span>Session Length (K Batches)</span>
+                  <span>Independent Records</span>
+                  <span>Accumulator Record</span>
+                  <span>Ratio</span>
+                </div>
+                <div class="flex justify-between items-center py-1"><span>K = 1</span> <span>56 B</span> <span>120 B</span> <span class="text-brand-300">0.47x</span></div>
+                <div class="flex justify-between items-center py-1"><span>K = 10</span> <span>560 B</span> <span>122 B</span> <span class="text-brand-300">4.59x</span></div>
+                <div class="flex justify-between items-center py-1"><span>K = 50</span> <span>2,800 B</span> <span>122 B</span> <span class="text-emerald-400 font-bold">22.95x</span></div>
+              </div>
+            `
+          }
+        ]
+      },
+      {
+        id: "simulation-benchmarks",
+        title: "Chapter 7: Market Sim & Empirical Benchmarks",
+        subtitle: "Agent Simulation, ITCH Replay & Measured Costs",
+        readTime: "4 min",
+        cards: [
+          {
+            title: "Market Microstructure Simulation & Duty Cycle",
+            badge: "Empirical Results",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                FairCross includes an integrated agent population simulator (<code>faircross::simulator</code>) evaluating synthetic Market Makers and Noise Traders across five batch intervals (10/50/100/250/500 ms) and three fixed seeds (101/202/303):
+              </p>
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs font-mono mb-4">
+                <div class="p-3 bg-dark-card rounded-xl border border-dark-border text-center">
+                  <span class="text-[10px] text-dark-textMuted block">Single-Batch R1CS Cost</span>
+                  <span class="text-base font-bold text-white">16 µs / 37 constraints</span>
+                </div>
+                <div class="p-3 bg-dark-card rounded-xl border border-dark-border text-center">
+                  <span class="text-[10px] text-dark-textMuted block">Engine @ 50 Orders</span>
+                  <span class="text-base font-bold text-brand-300">6.110 µs mean</span>
+                </div>
+                <div class="p-3 bg-dark-card rounded-xl border border-dark-border text-center">
+                  <span class="text-[10px] text-dark-textMuted block">Prover Duty @ 10ms</span>
+                  <span class="text-base font-bold text-emerald-400">0.037%</span>
+                </div>
+              </div>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                These are controlled prototype measurements from the recorded artifacts: the 10-second simulation matrix covers all 15 interval/seed combinations, while the cost model reports 16 µs single-batch synthesis and 0.037% modeled prover duty at a 10 ms interval.
+              </p>
+            `
+          },
+          {
+            title: "Nasdaq TotalView-ITCH 5.0 Replay & Oracle Collars",
+            badge: "Market Data",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-3">
+                The <code>faircross::marketdata</code> module provides streaming binary decoding for real-world exchange feeds:
+              </p>
+              <div class="space-y-2.5 text-xs">
+                <div class="p-3 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-brand-accent mt-1.5 shrink-0"></div>
+                  <div>
+                    <strong class="text-white block">ITCH 5.0 Binary Parser</strong>
+                    <span class="text-slate-400">Decodes System Event ('S'), Stock Directory ('R'), Add ('A'/'F'), Execute ('E'/'C'), Cancel ('X'), Delete ('D'), and Replace ('U') messages without network socket overhead.</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-brand-500 mt-1.5 shrink-0"></div>
+                  <div>
+                    <strong class="text-white block">Deterministic Level-3 Order Book</strong>
+                    <span class="text-slate-400">Maintains exact in-memory order book state, extracting BBO snapshots and signed reference prices.</span>
+                  </div>
+                </div>
+                <div class="p-3 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3">
+                  <div class="w-2 h-2 rounded-full bg-amber-400 mt-1.5 shrink-0"></div>
+                  <div>
+                    <strong class="text-white block">Signed Price Collar Enforcement</strong>
+                    <span class="text-slate-400">Enforces integer nanosecond freshness policies ($T_{batch} - T_{oracle} \\le \\Delta T_{max}$) and price collar bands ($|P^* - P_{ref}| \\le \\Delta_{max}$) inside the invariant checker and transparent R1CS harness.</span>
+                  </div>
+                </div>
+              </div>
+            `
+          },
+          {
+            title: "Complete Master Reproducibility Guide",
+            badge: "Reproduce Everything",
+            content: `
+              <p class="text-slate-300 leading-relaxed text-sm mb-4">
+                The current benchmark tables, attack report, and optimization results can be regenerated with a single command:
+              </p>
+              <div class="p-4 rounded-xl bg-dark-card border border-brand-500/30 space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-mono font-bold text-brand-300">Run Master Reproducibility Script:</span>
+                  <span class="text-[10px] font-mono bg-brand-500/10 text-brand-400 px-2 py-0.5 rounded">13 Experiments</span>
+                </div>
+                <pre class="bg-dark-bg p-3 rounded-lg font-mono text-xs text-brand-300 border border-dark-border select-all">./scripts/reproduce_all_experiments.sh</pre>
+                <div class="text-xs text-slate-400 space-y-1 pt-1">
+                  <p>✓ Runs the current 57-test suite and frozen-vector checks.</p>
+                  <p>✓ Runs one honest control plus 11 malicious attack cases; all malicious cases are rejected.</p>
+                  <p>✓ Benchmarks transparent R1CS costs, native accumulator records, and engine throughput.</p>
+                  <p>✓ Evaluates five batch intervals across three fixed seeds and replays bounded ITCH 5.0 samples.</p>
+                </div>
+              </div>
+            `
+          }
+        ]
+      }
+    ];
+
+    /* ==========================================================================
+       2. APPLICATION STATE
+       ========================================================================== */
+    let currentChapterIndex = 0;
+    let currentCardIndex = 0;
+    let isFocusMode = true; // Default to singular focal point
+
+    /* Simulator state */
+    let simOrders = [
+      { id: 1, side: 'buy', price: 105, qty: 20 },
+      { id: 2, side: 'buy', price: 100, qty: 15 },
+      { id: 3, side: 'sell', price: 95, qty: 10 },
+      { id: 4, side: 'sell', price: 100, qty: 25 },
+    ];
+
+    /* ==========================================================================
+       3. NAVIGATION & RENDERING ENGINE
+       ========================================================================== */
+    function initApp() {
+      renderChaptersNav();
+      renderCurrentView();
+      setupKeyboardNavigation();
+      updateProgressBar();
+    }
+
+    function renderChaptersNav() {
+      const navList = document.getElementById('chaptersNavList');
+      if (!navList) return;
+
+      navList.innerHTML = CHAPTERS.map((ch, idx) => {
+        const isActive = idx === currentChapterIndex;
+        return `
+          <button onclick="goToChapter(${idx}, 0)" class="w-full text-left px-3 py-2.5 rounded-xl text-xs flex items-center justify-between group transition ${
+            isActive 
+              ? 'bg-brand-500/10 border border-brand-500/40 text-brand-300 font-semibold' 
+              : 'hover:bg-dark-card text-dark-textMuted hover:text-white border border-transparent'
+          }">
+            <div class="flex items-center space-x-2.5 truncate">
+              <span class="w-5 h-5 rounded-full text-[10px] font-mono flex items-center justify-center ${
+                isActive ? 'bg-brand-500 text-white font-bold' : 'bg-dark-card text-dark-textMuted group-hover:text-white'
+              }">${idx + 1}</span>
+              <span class="truncate">${ch.title.split(':')[1] || ch.title}</span>
+            </div>
+            <span class="text-[10px] font-mono text-dark-textMuted shrink-0 ml-2">${ch.cards.length} cards</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderCurrentView() {
+      const container = document.getElementById('focalContainer');
+      if (!container) return;
+
+      const chapter = CHAPTERS[currentChapterIndex];
+      const card = chapter.cards[currentCardIndex];
+
+      // Update Header Indicators
+      document.getElementById('navChapterIndicator').textContent = chapter.title;
+      document.getElementById('navCardIndicator').textContent = `Focus ${currentCardIndex + 1} of ${chapter.cards.length}`;
+
+      // Update Nav List
+      renderChaptersNav();
+
+      if (isFocusMode) {
+        // SINGULAR FOCAL POINT VIEW (Card by card, distraction-free)
+        container.innerHTML = `
+          <div class="focal-card animate-in fade-in slide-in-from-bottom-3 duration-200">
+            <!-- Chapter Breadcrumb Header -->
+            <div class="flex items-center space-x-2 text-xs text-dark-textMuted mb-2">
+              <span class="font-mono text-brand-400 font-medium">${chapter.title.split(':')[0]}</span>
+              <span>›</span>
+              <span class="text-slate-300 font-medium">${chapter.subtitle}</span>
+            </div>
+
+            <!-- Card Heading & Tag -->
+            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b border-dark-border">
+              <h1 class="font-heading font-extrabold text-2xl sm:text-3xl text-white tracking-tight">${card.title}</h1>
+              <span class="px-3 py-1 rounded-full text-xs font-mono uppercase tracking-wider bg-brand-500/10 text-brand-300 border border-brand-500/30">
+                ${card.badge}
+              </span>
+            </div>
+
+            <!-- Focused Card Body Content -->
+            <div class="prose prose-invert max-w-none text-slate-200 leading-relaxed">
+              ${card.content}
+            </div>
+
+            <!-- Card Sub-Stepper Indicator -->
+            <div class="mt-8 pt-4 border-t border-dark-border/60 flex items-center justify-between text-xs text-dark-textMuted">
+              <div class="flex items-center space-x-1.5">
+                ${chapter.cards.map((_, i) => `
+                  <button onclick="goToCard(${i})" class="w-2.5 h-2.5 rounded-full transition ${
+                    i === currentCardIndex ? 'bg-brand-400 w-6' : 'bg-dark-border hover:bg-slate-500'
+                  }" title="Jump to Focus ${i + 1}"></button>
+                `).join('')}
+              </div>
+              <span class="font-mono text-[11px]">Step ${currentCardIndex + 1} of ${chapter.cards.length} in this chapter</span>
+            </div>
+          </div>
+        `;
+      } else {
+        // EXPANDED CHAPTER VIEW (All cards in current chapter visible)
+        container.innerHTML = `
+          <div class="space-y-10 animate-in fade-in duration-200">
+            <div class="pb-4 border-b border-dark-border">
+              <span class="text-xs font-mono uppercase tracking-wider text-brand-400 font-semibold">${chapter.title}</span>
+              <h1 class="font-heading font-extrabold text-3xl text-white mt-1">${chapter.subtitle}</h1>
+            </div>
+            
+            ${chapter.cards.map((c, i) => `
+              <section id="card-sec-${i}" class="p-6 rounded-2xl bg-dark-card/60 border border-dark-border space-y-4">
+                <div class="flex items-center justify-between">
+                  <h2 class="font-heading font-bold text-xl text-white">${c.title}</h2>
+                  <span class="px-2.5 py-0.5 rounded-full text-[11px] font-mono uppercase bg-brand-500/10 text-brand-300 border border-brand-500/30">${c.badge}</span>
+                </div>
+                <div class="text-slate-300 text-sm leading-relaxed">${c.content}</div>
+              </section>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      // Re-initialize dynamic widgets if on interactive chapters
+      if (chapter.id === 'interactive-auction-simulator') {
+        setTimeout(initAuctionSimulator, 50);
+      }
+
+      // Update Navigation Buttons
+      const isFirst = currentChapterIndex === 0 && currentCardIndex === 0;
+      const isLast = currentChapterIndex === CHAPTERS.length - 1 && currentCardIndex === chapter.cards.length - 1;
+      
+      const prevBtn = document.getElementById('prevFocusBtn');
+      const nextBtn = document.getElementById('nextFocusBtn');
+      
+      if (prevBtn) prevBtn.disabled = isFirst;
+      if (nextBtn) {
+        if (isLast) {
+          nextBtn.innerHTML = `<span>Complete Manual ✓</span>`;
+        } else {
+          nextBtn.innerHTML = `<span>Next Step</span><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>`;
+        }
+      }
+
+      updateProgressBar();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToChapter(chapIdx, cardIdx = 0) {
+      if (chapIdx < 0 || chapIdx >= CHAPTERS.length) return;
+      currentChapterIndex = chapIdx;
+      currentCardIndex = Math.min(cardIdx, CHAPTERS[chapIdx].cards.length - 1);
+      renderCurrentView();
+      closeSidebar();
+    }
+
+    function goToCard(cardIdx) {
+      currentCardIndex = cardIdx;
+      renderCurrentView();
+    }
+
+    function nextFocusCard() {
+      const chapter = CHAPTERS[currentChapterIndex];
+      if (currentCardIndex < chapter.cards.length - 1) {
+        currentCardIndex++;
+      } else if (currentChapterIndex < CHAPTERS.length - 1) {
+        currentChapterIndex++;
+        currentCardIndex = 0;
+      } else {
+        alert("🎉 Congratulations! You've completed the FairCross Interactive Manual!");
+        return;
+      }
+      renderCurrentView();
+    }
+
+    function prevFocusCard() {
+      if (currentCardIndex > 0) {
+        currentCardIndex--;
+      } else if (currentChapterIndex > 0) {
+        currentChapterIndex--;
+        currentCardIndex = CHAPTERS[currentChapterIndex].cards.length - 1;
+      }
+      renderCurrentView();
+    }
+
+    function toggleFocusMode() {
+      isFocusMode = !isFocusMode;
+      const label = document.getElementById('focusModeLabel');
+      if (label) {
+        label.textContent = isFocusMode ? 'Focus Mode: ON' : 'Extended View';
+      }
+      renderCurrentView();
+    }
+
+    function updateProgressBar() {
+      let totalCards = 0;
+      let completedCards = 0;
+
+      for (let i = 0; i < CHAPTERS.length; i++) {
+        totalCards += CHAPTERS[i].cards.length;
+        if (i < currentChapterIndex) {
+          completedCards += CHAPTERS[i].cards.length;
+        } else if (i === currentChapterIndex) {
+          completedCards += currentCardIndex + 1;
+        }
+      }
+
+      const percent = Math.min(100, Math.round((completedCards / totalCards) * 100));
+      const bar = document.getElementById('readingProgressBar');
+      if (bar) {
+        bar.style.width = `${percent}%`;
+      }
+    }
+
+    function setupKeyboardNavigation() {
+      window.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+        
+        if (e.key === 'ArrowRight') {
+          nextFocusCard();
+        } else if (e.key === 'ArrowLeft') {
+          prevFocusCard();
+        } else if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          openSearchModal();
+        } else if (e.key === 'Escape') {
+          closeSearchModal();
+          closeCliRunnerModal();
+        }
+      });
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebarNav');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (sidebar.classList.contains('-translate-x-full')) {
+        sidebar.classList.remove('-translate-x-full');
+        backdrop.classList.remove('hidden');
+      } else {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+    function closeSidebar() {
+      const sidebar = document.getElementById('sidebarNav');
+      const backdrop = document.getElementById('sidebarBackdrop');
+      if (sidebar && backdrop) {
+        sidebar.classList.add('-translate-x-full');
+        backdrop.classList.add('hidden');
+      }
+    }
+
+    document.getElementById('sidebarToggleBtn')?.addEventListener('click', toggleSidebar);
+
+    /* ==========================================================================
+       4. INTERACTIVE AUCTION SIMULATOR ENGINE (CHAPTER 4)
+       ========================================================================== */
+    function initAuctionSimulator() {
+      renderSimOrdersTable();
+      calculateAndDrawAuction();
+    }
+
+    function renderSimOrdersTable() {
+      const tbody = document.getElementById('simOrdersTableBody');
+      if (!tbody) return;
+
+      tbody.innerHTML = simOrders.map((o, idx) => `
+        <tr class="hover:bg-dark-surface/50 font-mono">
+          <td class="p-2 text-dark-textMuted">${o.id}</td>
+          <td class="p-2">
+            <select onchange="updateSimOrder(${idx}, 'side', this.value)" class="bg-dark-bg border border-dark-border rounded px-1.5 py-0.5 text-xs ${o.side === 'buy' ? 'text-emerald-400' : 'text-cyan-400'}">
+              <option value="buy" ${o.side === 'buy' ? 'selected' : ''}>BUY</option>
+              <option value="sell" ${o.side === 'sell' ? 'selected' : ''}>SELL</option>
+            </select>
+          </td>
+          <td class="p-2">
+            <input type="number" value="${o.price}" min="1" step="1" onchange="updateSimOrder(${idx}, 'price', parseInt(this.value))" class="w-20 bg-dark-bg border border-dark-border rounded px-2 py-0.5 text-white text-xs" />
+          </td>
+          <td class="p-2">
+            <input type="number" value="${o.qty}" min="1" step="1" onchange="updateSimOrder(${idx}, 'qty', parseInt(this.value))" class="w-20 bg-dark-bg border border-dark-border rounded px-2 py-0.5 text-white text-xs" />
+          </td>
+          <td class="p-2 text-right">
+            <button onclick="removeSimOrder(${idx})" class="text-red-400 hover:text-red-300 font-sans text-xs">✕</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function updateSimOrder(idx, field, val) {
+      if (simOrders[idx]) {
+        simOrders[idx][field] = val;
+        calculateAndDrawAuction();
+      }
+    }
+
+    function addSimOrder() {
+      const nextId = simOrders.length > 0 ? Math.max(...simOrders.map(o => o.id)) + 1 : 1;
+      simOrders.push({ id: nextId, side: 'buy', price: 100, qty: 10 });
+      renderSimOrdersTable();
+      calculateAndDrawAuction();
+    }
+
+    function removeSimOrder(idx) {
+      simOrders.splice(idx, 1);
+      renderSimOrdersTable();
+      calculateAndDrawAuction();
+    }
+
+    function loadSimPreset(presetKey) {
+      if (presetKey === 'normal') {
+        simOrders = [
+          { id: 1, side: 'buy', price: 105, qty: 20 },
+          { id: 2, side: 'buy', price: 100, qty: 15 },
+          { id: 3, side: 'sell', price: 95, qty: 10 },
+          { id: 4, side: 'sell', price: 100, qty: 25 },
+        ];
+      } else if (presetKey === 'tie') {
+        simOrders = [
+          { id: 1, side: 'buy', price: 110, qty: 50 },
+          { id: 2, side: 'sell', price: 90, qty: 50 },
+        ];
+      } else if (presetKey === 'prorata') {
+        simOrders = [
+          { id: 1, side: 'buy', price: 100, qty: 100 },
+          { id: 2, side: 'sell', price: 100, qty: 30 },
+          { id: 3, side: 'sell', price: 100, qty: 30 },
+          { id: 4, side: 'sell', price: 100, qty: 30 },
+        ];
+      } else if (presetKey === 'nocross') {
+        simOrders = [
+          { id: 1, side: 'buy', price: 90, qty: 20 },
+          { id: 2, side: 'sell', price: 110, qty: 20 },
+        ];
+      }
+      renderSimOrdersTable();
+      calculateAndDrawAuction();
+    }
+
+    function calculateAndDrawAuction() {
+      const canvas = document.getElementById('simAuctionCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      // Candidate prices
+      const pricesSet = new Set(simOrders.map(o => o.price));
+      const candidatePrices = Array.from(pricesSet).sort((a, b) => a - b);
+
+      let maxVol = 0;
+      let maximizers = [];
+
+      candidatePrices.forEach(p => {
+        const demand = simOrders.filter(o => o.side === 'buy' && o.price >= p).reduce((s, o) => s + o.qty, 0);
+        const supply = simOrders.filter(o => o.side === 'sell' && o.price <= p).reduce((s, o) => s + o.qty, 0);
+        const execVol = Math.min(demand, supply);
+        if (execVol > maxVol) {
+          maxVol = execVol;
+          maximizers = [p];
+        } else if (execVol === maxVol && maxVol > 0) {
+          maximizers.push(p);
+        }
+      });
+
+      let clearingPrice = null;
+      if (maxVol > 0 && maximizers.length > 0) {
+        const pMin = Math.min(...maximizers);
+        const pMax = Math.max(...maximizers);
+        clearingPrice = Math.floor((pMin + pMax) / 2);
+      }
+
+      // Update dashboard values
+      document.getElementById('simResPrice').textContent = clearingPrice !== null ? `${clearingPrice} ticks` : 'None (No Cross)';
+      document.getElementById('simResVol').textContent = `${maxVol} lots`;
+      document.getElementById('simResCash').textContent = maxVol > 0 ? `Exact ($${maxVol * (clearingPrice || 0)})` : '0 (Conserved)';
+      document.getElementById('simResStatus').textContent = 'PASSED [SAT]';
+
+      // Compute allocations
+      renderSimAllocations(clearingPrice, maxVol);
+
+      // Draw Step Curves on Canvas
+      drawCurves(canvas, ctx, candidatePrices, clearingPrice, maxVol);
+    }
+
+    function renderSimAllocations(clearingPrice, maxVol) {
+      const allocContainer = document.getElementById('simAllocationsList');
+      if (!allocContainer) return;
+
+      if (!clearingPrice || maxVol === 0) {
+        allocContainer.innerHTML = '<span class="text-dark-textMuted">No orders crossed in this batch. All fills = 0.</span>';
+        return;
+      }
+
+      const rows = simOrders.map(o => {
+        let fill = 0;
+        let note = '';
+        if (o.side === 'buy') {
+          if (o.price > clearingPrice) {
+            fill = o.qty;
+            note = 'In-The-Money (100% Price Priority)';
+          } else if (o.price === clearingPrice) {
+            fill = Math.min(o.qty, maxVol);
+            note = 'At-The-Money (Hare-Niemeyer Allocation)';
+          } else {
+            note = 'Out-Of-The-Money (0%)';
+          }
+        } else {
+          if (o.price < clearingPrice) {
+            fill = o.qty;
+            note = 'In-The-Money (100% Price Priority)';
+          } else if (o.price === clearingPrice) {
+            fill = Math.min(o.qty, maxVol);
+            note = 'At-The-Money (Hare-Niemeyer Allocation)';
+          } else {
+            note = 'Out-Of-The-Money (0%)';
+          }
+        }
+        return `
+          <div class="flex items-center justify-between p-1.5 rounded bg-dark-surface">
+            <span>Order #${o.id} (${o.side.toUpperCase()} ${o.qty}@${o.price}):</span>
+            <span class="text-white font-bold">Fill: ${fill}/${o.qty} lots <span class="text-[10px] text-dark-textMuted font-sans">(${note})</span></span>
+          </div>
+        `;
+      });
+
+      allocContainer.innerHTML = rows.join('');
+    }
+
+    function drawCurves(canvas, ctx, prices, clearingPrice, maxVol) {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      if (prices.length === 0) return;
+
+      const minP = Math.max(1, Math.min(...prices) - 10);
+      const maxP = Math.max(...prices) + 10;
+      const allQtys = simOrders.map(o => o.qty);
+      const maxQ = Math.max(...allQtys, 100) * 1.3;
+
+      const pToX = (p) => 40 + ((p - minP) / (maxP - minP)) * (W - 80);
+      const qToY = (q) => H - 30 - (q / maxQ) * (H - 50);
+
+      // Grid lines
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = 20 + i * (H - 50) / 4;
+        ctx.beginPath(); ctx.moveTo(40, y); ctx.lineTo(W - 40, y); ctx.stroke();
+      }
+
+      // Draw Demand Curve (Green)
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let p = minP; p <= maxP; p += 1) {
+        const d = simOrders.filter(o => o.side === 'buy' && o.price >= p).reduce((s, o) => s + o.qty, 0);
+        const x = pToX(p);
+        const y = qToY(d);
+        if (p === minP) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Draw Supply Curve (Cyan)
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      for (let p = minP; p <= maxP; p += 1) {
+        const s = simOrders.filter(o => o.side === 'sell' && o.price <= p).reduce((s, o) => s + o.qty, 0);
+        const x = pToX(p);
+        const y = qToY(s);
+        if (p === minP) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+
+      // Draw Clearing Price Point & Line (Amber)
+      if (clearingPrice !== null && maxVol > 0) {
+        const cx = pToX(clearingPrice);
+        const cy = qToY(maxVol);
+
+        ctx.strokeStyle = '#f59e0b';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath(); ctx.moveTo(cx, H - 30); ctx.lineTo(cx, cy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(40, cy); ctx.lineTo(cx, cy); ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = '#f59e0b';
+        ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+    }
+
+    /* ==========================================================================
+       5. ADVERSARIAL ATTACK MATRIX LAB (CHAPTER 5)
+       ========================================================================== */
+    const ATTACK_VECTORS = {
+      omitted_order: {
+        title: "1. Order Censorship / Omission",
+        action: "Operator intentionally dropped Order ID 1 from batch execution manifest.",
+        inv: "FAILED: TotalCountMismatch (expected 4, got 3 in complete-input accounting)",
+        r1cs: "UNSAT: complete-input accounting constraint breached on Merkle leaf 0",
+        state: "ABORTED (No accepted state transition)",
+        auditDesc: "Published Merkle root binds all 4 orders. The in-process accounting relation requires authentic paths for all N leaves. Dropping an order fails the satisfiability check."
+      },
+      price_inflation: {
+        title: "2. Clearing Price Inflation Attack",
+        action: "Operator set clearing price to 105 ticks instead of deterministic volume-maximizing price (100 ticks).",
+        inv: "FAILED: InvariantViolation::NonDeterministicClearing (expected 100, got 105)",
+        r1cs: "UNSAT: clearing volume optimality constraint failed (V(100) > V(105))",
+        state: "ABORTED (State transition rejected)",
+        auditDesc: "The in-process clearing relation evaluates all candidate prices. If any candidate price attains strictly greater volume than the proposed price, the relation is unsatisfied."
+      },
+      overfill: {
+        title: "3. Overfill Manipulation Attack",
+        action: "Operator allocated 99,999 lots to Order ID 1 when only 20 lots were submitted.",
+        inv: "FAILED: InvariantViolation::Overfill on Order ID 1 (allocated 99,999 > submitted 20)",
+        r1cs: "UNSAT: fill bounds range constraint fill_qty <= order_qty violated",
+        state: "ABORTED (State transition rejected)",
+        auditDesc: "The arithmetic relation enforces fill_qty <= order_qty via non-negative bit-decomposition range checks."
+      },
+      preferential_alloc: {
+        title: "4. Preferential Cartel Allocation Attack",
+        action: "Operator conserved total volume (35 lots) but gave 100% of fills to cartel friend, starving at-the-money participants.",
+        inv: "FAILED: InvariantViolation::AllocationRuleMismatch (Hare-Niemeyer quota violated)",
+        r1cs: "UNSAT: deterministic pro-rata quotient and largest remainder constraints violated",
+        state: "ABORTED (State transition rejected)",
+        auditDesc: "Pro-rata allocation must satisfy exact integer division: q_i * V_rem = base_i * Q_atm + rem_i. Favored fills fail this relation."
+      },
+      cash_minting: {
+        title: "5. Unauthorized Cash Minting Attack",
+        action: "Operator credited +$10,000 to their own account balance out of thin air without matching counterparty.",
+        inv: "FAILED: InvariantViolation::CashConservation (pre-state $23,000 != post-state $33,000)",
+        r1cs: "UNSAT: global cash sum constraint sum(cash_pre) = sum(cash_post) failed",
+        state: "ABORTED (State transition rejected)",
+        auditDesc: "Global conservation sums across all account registers before committing. Any imbalance fails the local satisfiability check."
+      },
+      stale_oracle: {
+        title: "6. Stale Oracle Reference Snapshot Attack",
+        action: "Operator applied an authentic oracle reference snapshot that was 1 nanosecond older than max staleness (age = 1,000,000,001ns > 1,000,000,000ns).",
+        inv: "FAILED: OracleValidationError::StaleOracleSnapshot (age exceeded max staleness window)",
+        r1cs: "UNSAT: timestamp freshness window check (T_batch - T_oracle <= Delta_T) failed",
+        state: "ABORTED (State transition rejected)",
+        auditDesc: "Deterministic integer boundary constraints reject off-by-one nanosecond staleness breaches."
+      }
+    };
+
+    function runSimAttack(attackKey) {
+      const atk = ATTACK_VECTORS[attackKey];
+      if (!atk) return;
+
+      document.getElementById('attackTermTitle').textContent = `Selected Vector: ${atk.title}`;
+      document.getElementById('attackTermAction').textContent = atk.action;
+      document.getElementById('attackTermInv').textContent = atk.inv;
+      document.getElementById('attackTermR1cs').textContent = atk.r1cs;
+      document.getElementById('attackTermState').textContent = atk.state;
+      document.getElementById('attackTermAuditDesc').textContent = atk.auditDesc;
+    }
+
+    /* ==========================================================================
+       6. SEARCH & COMMAND PALETTE MODAL
+       ========================================================================== */
+    function openSearchModal() {
+      const modal = document.getElementById('searchModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.getElementById('searchInput').focus();
+      handleSearch('');
+    }
+
+    function closeSearchModal() {
+      const modal = document.getElementById('searchModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function handleSearch(query) {
+      const resultsContainer = document.getElementById('searchResults');
+      if (!resultsContainer) return;
+
+      const q = query.toLowerCase().trim();
+      let matches = [];
+
+      CHAPTERS.forEach((ch, chIdx) => {
+        ch.cards.forEach((c, cIdx) => {
+          if (!q || ch.title.toLowerCase().includes(q) || c.title.toLowerCase().includes(q) || c.content.toLowerCase().includes(q)) {
+            matches.push({ chIdx, cIdx, chapterTitle: ch.title, cardTitle: c.title, badge: c.badge });
+          }
+        });
+      });
+
+      if (matches.length === 0) {
+        resultsContainer.innerHTML = '<div class="p-4 text-center text-xs text-dark-textMuted">No matching topics found.</div>';
+        return;
+      }
+
+      resultsContainer.innerHTML = matches.slice(0, 8).map(m => `
+        <button onclick="goToChapter(${m.chIdx}, ${m.cIdx}); closeSearchModal();" class="w-full text-left p-2.5 rounded-lg hover:bg-dark-card border border-transparent hover:border-dark-border flex items-center justify-between text-xs group transition">
+          <div>
+            <div class="font-semibold text-white group-hover:text-brand-300">${m.cardTitle}</div>
+            <div class="text-[10px] text-dark-textMuted">${m.chapterTitle}</div>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-dark-bg text-brand-400 border border-dark-border">${m.badge}</span>
+        </button>
+      `).join('');
+    }
+
+    /* ==========================================================================
+       7. CLI COMMAND RUNNER MODAL
+       ========================================================================== */
+    let cliCurrentMode = 'run';
+
+    function openCliRunnerModal() {
+      const modal = document.getElementById('cliModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      updateCliOutputSnippet();
+    }
+
+    function closeCliRunnerModal() {
+      const modal = document.getElementById('cliModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function setCliModalCommand(mode) {
+      cliCurrentMode = mode;
+      ['run', 'attack', 'prove', 'session'].forEach(m => {
+        const btn = document.getElementById(`cliBtn_${m}`);
+        if (m === mode) {
+          btn.className = "px-3 py-2 rounded-lg text-xs font-medium border bg-brand-500/20 border-brand-500 text-brand-300";
+        } else {
+          btn.className = "px-3 py-2 rounded-lg text-xs font-medium border bg-dark-card border-dark-border text-slate-300 hover:border-slate-500";
+        }
+      });
+      updateCliOutputSnippet();
+    }
+
+    function updateCliOutputSnippet() {
+      const select = document.getElementById('cliTargetSelect');
+      const target = select.value;
+      const cmdOutput = document.getElementById('cliCommandOutput');
+      const desc = document.getElementById('cliExpectedDesc');
+
+      if (cliCurrentMode === 'run') {
+        cmdOutput.textContent = `cpp/bin/faircross_cpp run ${target}`;
+        desc.textContent = "Executes discrete frequent batch matching, calculates volume-maximizing clearing price, prints verified fills, and audits balance conservation.";
+      } else if (cliCurrentMode === 'attack') {
+        cmdOutput.textContent = `cpp/bin/faircross_cpp attack-matrix ${target}`;
+        desc.textContent = "Evaluates 11 malicious operator attack vectors against the fixture and reports automated security rejection results.";
+      } else if (cliCurrentMode === 'prove') {
+        cmdOutput.textContent = `cpp/bin/faircross_cpp prove ${target} --verify`;
+        desc.textContent = "Synthesizes the transparent in-process R1CS relation, checks local satisfiability, and validates public-input consistency. This is not a zero-knowledge or remote proof.";
+      } else if (cliCurrentMode === 'session') {
+        cmdOutput.textContent = `cpp/bin/faircross_cpp prove-session ${target} --verify`;
+        desc.textContent = "Chains sequential batch transitions with a native SHA-256 running-state accumulator and replays every step during verification; it is not recursive IVC and verification is linear in the number of steps.";
+      }
+    }
+
+    function copyCliCommand() {
+      const cmd = document.getElementById('cliCommandOutput').textContent;
+      navigator.clipboard.writeText(cmd).then(() => {
+        const btn = document.getElementById('copyCliBtn');
+        btn.textContent = 'Copied! ✓';
+        btn.classList.add('text-brand-400');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('text-brand-400');
+        }, 2000);
+      });
+    }
+
+    // Initialize on window load
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>

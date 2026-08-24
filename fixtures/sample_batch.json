@@ -1,0 +1,61 @@
+{
+  "pre_state": [
+    {
+      "account_id": 1,
+      "cash": 10000,
+      "inventory": { "1": 0 }
+    },
+    {
+      "account_id": 2,
+      "cash": 5000,
+      "inventory": { "1": 50 }
+    },
+    {
+      "account_id": 3,
+      "cash": 8000,
+      "inventory": { "1": 30 }
+    }
+  ],
+  "batch": {
+    "batch_id": 1,
+    "instrument": 1,
+    "orders": [
+      {
+        "id": 1,
+        "account": 1,
+        "instrument": 1,
+        "side": "buy",
+        "price": 105,
+        "qty": 20,
+        "seq": 0
+      },
+      {
+        "id": 2,
+        "account": 1,
+        "instrument": 1,
+        "side": "buy",
+        "price": 100,
+        "qty": 15,
+        "seq": 1
+      },
+      {
+        "id": 3,
+        "account": 2,
+        "instrument": 1,
+        "side": "sell",
+        "price": 95,
+        "qty": 10,
+        "seq": 2
+      },
+      {
+        "id": 4,
+        "account": 3,
+        "instrument": 1,
+        "side": "sell",
+        "price": 100,
+        "qty": 25,
+        "seq": 3
+      }
+    ]
+  }
+}

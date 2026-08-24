@@ -1,0 +1,51 @@
+{
+  "_provenance": {
+    "frozen_for_release": "v0.1.0",
+    "note": "Frozen reference values published for v0.1.0. These detect drift from a recorded value, not disagreement between two live implementations; see docs/LIMITATIONS.md.",
+    "status": "frozen",
+    "verifier": "scripts/verify_golden_vectors.py"
+  },
+  "allocation": {
+    "allocations": [
+      {
+        "account": 1,
+        "allocated_qty": 0,
+        "limit_price": 105,
+        "order_id": 10,
+        "original_qty": 15,
+        "seq": 0,
+        "side": "buy"
+      },
+      {
+        "account": 2,
+        "allocated_qty": 0,
+        "limit_price": 95,
+        "order_id": 11,
+        "original_qty": 25,
+        "seq": 1,
+        "side": "buy"
+      }
+    ],
+    "target_volume": 0,
+    "total_buy_allocated": 0,
+    "total_sell_allocated": 0
+  },
+  "batch_header_hash": "bb1699b87a5b1bc7537cd5fc483964e00dd2e41b1fb8a35af411f21ddc5f2621",
+  "clearing_price": null,
+  "executable_volume": 0,
+  "fills": [],
+  "fixture": "02_one_sided_no_crossing",
+  "post_state": [
+    {
+      "account_id": 1,
+      "cash": 10000,
+      "inventory": {}
+    },
+    {
+      "account_id": 2,
+      "cash": 10000,
+      "inventory": {}
+    }
+  ],
+  "r1cs_constraints": 27
+}

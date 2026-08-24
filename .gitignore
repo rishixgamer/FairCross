@@ -1,0 +1,13 @@
+.DS_Store
+*.log
+.env
+.env.*
+!*.example
+experiments/results/*.tmp
+
+# C++ build artifacts
+/cpp/build
+/cpp/bin
+**/*.o
+**/*.d
+**/*.bench.o

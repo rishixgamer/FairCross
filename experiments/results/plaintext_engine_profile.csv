@@ -1,0 +1,6 @@
+batch_size,iterations,mean_execution_micros,p50_execution_micros,p90_execution_micros,p99_execution_micros,mean_verification_micros,throughput_orders_per_sec
+10,100,1.100,1,1,4,1.020,9090909.091
+50,100,6.110,6,6,9,6.140,8183306.056
+100,100,12.140,12,12,16,13.260,8237232.290
+250,100,32.610,32,34,47,37.610,7666360.012
+500,100,79.720,68,77,420,85.130,6271951.831

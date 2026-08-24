@@ -1,0 +1,74 @@
+{
+  "_provenance": {
+    "frozen_for_release": "v0.1.0",
+    "note": "Frozen reference values published for v0.1.0. These detect drift from a recorded value, not disagreement between two live implementations; see docs/LIMITATIONS.md.",
+    "status": "frozen",
+    "verifier": "scripts/verify_golden_vectors.py"
+  },
+  "allocation": {
+    "allocations": [
+      {
+        "account": 1,
+        "allocated_qty": 10,
+        "limit_price": 105,
+        "order_id": 30,
+        "original_qty": 10,
+        "seq": 0,
+        "side": "buy"
+      },
+      {
+        "account": 2,
+        "allocated_qty": 10,
+        "limit_price": 95,
+        "order_id": 31,
+        "original_qty": 10,
+        "seq": 1,
+        "side": "sell"
+      }
+    ],
+    "target_volume": 10,
+    "total_buy_allocated": 10,
+    "total_sell_allocated": 10
+  },
+  "batch_header_hash": "14e41784f220725b1f3c16d563312cec2d1288176acb8f7931aa57a9f15d45d7",
+  "clearing_price": 100,
+  "executable_volume": 10,
+  "fills": [
+    {
+      "account_id": 1,
+      "consideration": 1000,
+      "execution_price": 100,
+      "fill_idx": 0,
+      "fill_qty": 10,
+      "instrument_id": 1,
+      "order_id": 30,
+      "side": "buy"
+    },
+    {
+      "account_id": 2,
+      "consideration": 1000,
+      "execution_price": 100,
+      "fill_idx": 1,
+      "fill_qty": 10,
+      "instrument_id": 1,
+      "order_id": 31,
+      "side": "sell"
+    }
+  ],
+  "fixture": "04_tie_price_interval",
+  "post_state": [
+    {
+      "account_id": 1,
+      "cash": 9000,
+      "inventory": {
+        "1": 10
+      }
+    },
+    {
+      "account_id": 2,
+      "cash": 1000,
+      "inventory": {}
+    }
+  ],
+  "r1cs_constraints": 37
+}

@@ -1,0 +1,38 @@
+{
+  "pre_state": [
+    {
+      "account_id": 1,
+      "cash": 10000,
+      "inventory": { "1": 0 }
+    },
+    {
+      "account_id": 2,
+      "cash": 10000,
+      "inventory": { "1": 0 }
+    }
+  ],
+  "batch": {
+    "batch_id": 2,
+    "instrument": 1,
+    "orders": [
+      {
+        "id": 10,
+        "account": 1,
+        "instrument": 1,
+        "side": "buy",
+        "price": 105,
+        "qty": 15,
+        "seq": 0
+      },
+      {
+        "id": 11,
+        "account": 2,
+        "instrument": 1,
+        "side": "buy",
+        "price": 95,
+        "qty": 25,
+        "seq": 1
+      }
+    ]
+  }
+}

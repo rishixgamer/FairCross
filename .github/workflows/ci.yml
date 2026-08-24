@@ -1,0 +1,30 @@
+name: verification
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify C++ headers are self-contained
+        run: |
+          while IFS= read -r header; do
+            printf '#include "%s"\n' "$header" |
+              clang++ -std=c++20 -I. -Icpp/include -Icpp/bench -x c++ -fsyntax-only -
+          done < <(find cpp -name '*.hpp' -type f | sort)
+      - name: Run frozen-vector, sanitizer, test, and CLI gate
+        env:
+          CXX: clang++
+        run: ./scripts/check.sh

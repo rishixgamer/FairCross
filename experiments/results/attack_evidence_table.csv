@@ -1,0 +1,13 @@
+attack_name,is_honest_control,passed_verification,rejection_reason
+honest_baseline,true,true,
+omitted_order_censorship,false,false,AccountingError: TotalCountMismatch
+clearing_price_inflation,false,false,InvariantViolation: NonDeterministicClearing: outcome mismatch
+clearing_price_deflation,false,false,InvariantViolation: NonDeterministicClearing: outcome mismatch
+overfill_attack,false,false,InvariantViolation: AllocationRuleMismatch: allocated_qty mismatch
+preferential_allocation,false,false,InvariantViolation: AllocationRuleMismatch: allocated_qty mismatch
+limit_price_violation,false,false,InvariantViolation: LimitPriceViolation: buy fill above limit
+frozen_post_state_attack,false,false,InvariantViolation: AccountStateMismatch: account 1 cash does not match pre-state updated by its fills
+cash_creation_attack,false,false,InvariantViolation: CashConservation: pre_cash != post_cash
+inventory_creation_attack,false,false,InvariantViolation: AssetConservation: pre_inv != post_inv
+commitment_leaf_spoofing,false,false,AccountingError: MerkleInclusionFailed
+stale_oracle_reference,false,false,OracleValidationError: StaleOracleSnapshot

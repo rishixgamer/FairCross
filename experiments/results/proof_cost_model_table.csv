@@ -1,0 +1,6 @@
+interval_ms,mean_batches,mean_batch_size_orders,mean_cleared_volume_lots,single_batch_prove_time_us,single_batch_constraints,total_session_prove_time_ms,prover_duty_cycle_percent
+10,232.667,1.182,2.000,16,37,3.723,0.037
+50,149.000,1.846,2.333,16,37,2.384,0.024
+100,94.333,2.915,4.000,16,37,1.509,0.015
+250,39.667,6.933,0.000,16,37,0.635,0.006
+500,20.000,13.750,0.000,16,37,0.320,0.003
