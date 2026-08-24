@@ -12,8 +12,8 @@ evidence that its published market procedure was followed.
 ## Research question
 
 Can a private frequent-batch market provide compact, publicly checkable evidence of procedural
-fairness—order inclusion/accounting, deterministic clearing, valid allocation, reference-price
-integrity, and conservation—without revealing individual order prices and quantities?
+fairness (order inclusion and accounting, deterministic clearing, valid allocation, reference-price
+integrity, and conservation) without revealing individual order prices and quantities?
 
 ## MVP
 

@@ -74,7 +74,7 @@ This records that the local prover completed. Because the certificate contains n
 nor a cryptographic proof, an external party can fabricate a well-formed string. The verifier's
 format check does not establish R1CS satisfaction. Closing that gap requires either a
 witness-carrying transparent proof that replays the relation or a separately selected sound proving
-backend. See [`LIMITATIONS.md` section 2.9](LIMITATIONS.md).
+backend. See [`LIMITATIONS.md` section 6](LIMITATIONS.md).
 
 ## Explicit non-claims
 

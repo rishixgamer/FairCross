@@ -6,20 +6,20 @@
 // -------
 // This is the disagreeing party. It exists so that a defect in the production
 // commitment scheme has to be reproduced twice, by two separately derived
-// implementations, before it can pass the gate (ADR-085).
+// implementations, before it can pass the gate (ADR-017).
 //
 // DERIVATION
 // ----------
 // Everything here is derived from the specification in docs/DECISIONS.md, NOT
 // from the production headers:
 //
-//   ADR-022  canonical commitment encoding, field-by-field byte offsets
-//   ADR-023  domain-separated leaf/node/empty hashing
-//   ADR-026  Merkle construction, odd-layer padding, empty-batch case
-//   ADR-027  batch header metadata binding
-//   ADR-082  ledger root over accounts in ascending AccountId order
-//   ADR-083  oracle snapshot preimage and the absent marker
-//   ADR-086  per-account blinding salt derivation
+//   ADR-009  canonical encodings and domain-separated SHA-256 commitments:
+//            field-by-field byte offsets, leaf/node/empty hashing, Merkle
+//            construction, odd-layer padding, and the empty-batch case
+//   ADR-010  batch header binding to the canonical order Merkle root
+//   ADR-011  blinded ledger commitments: root over accounts in ascending
+//            AccountId order, and per-account salt derivation
+//   ADR-012  oracle snapshot preimage and the absent marker
 //
 // The production code builds byte buffers by appending fields in order. This
 // implementation instead writes each field at its documented absolute offset
@@ -33,7 +33,7 @@
 // little: it is already pinned against published NIST test vectors by
 // `test_sha256_standard_vectors`, and it is not where the defect this harness
 // was built to catch actually lived (that was domain separation and tree shape).
-// A SHA-256 bug would therefore be invisible to this check. See ADR-085.
+// A SHA-256 bug would therefore be invisible to this check. See ADR-017.
 
 #include <algorithm>
 #include <array>
@@ -53,7 +53,7 @@
 
 namespace faircross::conformance {
 
-// --- Domain separation (ADR-023, ADR-026) --------------------------------
+// --- Domain separation (ADR-009, ADR-009) --------------------------------
 inline constexpr std::string_view LEAF_PREFIX = "FC_LEAF_";
 inline constexpr std::string_view NODE_PREFIX = "FC_NODE_";
 inline constexpr std::string_view EMPTY_PREFIX = "FC_EMPTY_NODE";
@@ -109,7 +109,7 @@ void put_tag(std::array<uint8_t, N>& buf, size_t offset, std::string_view tag) {
     for (size_t i = 0; i < tag.size(); ++i) buf[offset + i] = static_cast<uint8_t>(tag[i]);
 }
 
-// --- ADR-022: SaltedOrderPreimage, 86 bytes ------------------------------
+// --- ADR-009: SaltedOrderPreimage, 86 bytes ------------------------------
 //   0..4 tag "FCOR" | 4 version | 5..13 id | 13..21 account | 21..29 instrument
 //   29 side | 30..38 price | 38..46 qty | 46..54 seq | 54..86 salt
 inline std::array<uint8_t, 86> encode_order(const SaltedOrderPreimage& p) {
@@ -127,7 +127,7 @@ inline std::array<uint8_t, 86> encode_order(const SaltedOrderPreimage& p) {
     return buf;
 }
 
-// --- ADR-022: SaltedAccountPreimage, 77 bytes ----------------------------
+// --- ADR-009: SaltedAccountPreimage, 77 bytes ----------------------------
 //   0..4 tag "FCAC" | 4 version | 5..13 account | 13..29 cash (128-bit unsigned)
 //   29..37 instrument | 37..45 inventory | 45..77 salt
 inline std::array<uint8_t, 77> encode_account(AccountId account, Money cash,
@@ -144,7 +144,7 @@ inline std::array<uint8_t, 77> encode_account(AccountId account, Money cash,
     return buf;
 }
 
-// --- ADR-027: BatchHeader, 69 bytes --------------------------------------
+// --- ADR-010: BatchHeader, 69 bytes --------------------------------------
 //   0..4 tag "FCBH" | 4 version | 5..9 semantic_version | 9..17 batch_id
 //   17..25 instrument_id | 25..33 cutoff_timestamp | 33..37 order_count
 //   37..69 orders_merkle_root
@@ -164,7 +164,7 @@ inline std::array<uint8_t, 69> encode_batch_header(uint32_t semantic_version, ui
     return buf;
 }
 
-// --- ADR-083: OracleSnapshotPreimage, 57 bytes ---------------------------
+// --- ADR-012: OracleSnapshotPreimage, 57 bytes ---------------------------
 //   0..4 tag "FCOS" | 4 version | 5..9 oracle_id | 9..17 instrument_id
 //   17..25 reference_price | 25..33 timestamp | 33..41 sequence
 //   41..49 max_staleness | 49..57 max_deviation
@@ -183,7 +183,7 @@ inline std::array<uint8_t, 57> encode_oracle(const ReferencePriceSnapshot& s,
     return buf;
 }
 
-// --- Scheme primitives (ADR-023, ADR-026) --------------------------------
+// --- Scheme primitives (ADR-009, ADR-009) --------------------------------
 inline Commitment leaf_of(const uint8_t* data, size_t len) {
     return sha256(LEAF_PREFIX, data, len);
 }
@@ -199,7 +199,7 @@ inline Commitment combine(const Commitment& left, const Commitment& right) {
     return sha256(NODE_PREFIX, pair.data(), pair.size());
 }
 
-/// ADR-026: pairwise combine; a dangling odd node pairs with `empty_node()`;
+/// ADR-009: pairwise combine; a dangling odd node pairs with `empty_node()`;
 /// an empty leaf set evaluates to `empty_node()`.
 inline Commitment merkle_root(std::vector<Commitment> layer) {
     if (layer.empty()) return empty_node();
@@ -238,7 +238,7 @@ inline Commitment batch_header_commitment_ref(uint32_t semantic_version, uint64_
     return leaf_of(encoded.data(), encoded.size());
 }
 
-/// ADR-086: salt = SHA256("FC_ACCT_SALT_V1" || venue_secret[32] || account_id_le[8]).
+/// ADR-011: salt = SHA256("FC_ACCT_SALT_V1" || venue_secret[32] || account_id_le[8]).
 ///
 /// Built here as a fixed-size offset-addressed buffer, matching how the ADR
 /// states the layout, rather than by appending as production does.
@@ -251,7 +251,7 @@ inline std::array<uint8_t, 32> derive_account_salt_ref(
     return sha256(LEAF_PREFIX, buf.data(), buf.size()).bytes;
 }
 
-/// ADR-082 with ADR-086: Merkle root over accounts in ascending AccountId
+/// ADR-011 with ADR-011: Merkle root over accounts in ascending AccountId
 /// order, each leaf carrying that account's blinding salt. An empty ledger
 /// commits to `empty_node()`.
 inline Commitment ledger_root_ref(const Ledger& ledger, InstrumentId instrument) {
@@ -276,7 +276,7 @@ inline Commitment ledger_root_ref(const Ledger& ledger, InstrumentId instrument)
     return merkle_root(std::move(leaves));
 }
 
-/// ADR-083: snapshot bound with its policy; absence commits to a distinct marker.
+/// ADR-012: snapshot bound with its policy; absence commits to a distinct marker.
 inline Commitment oracle_commitment_ref(const std::optional<ReferencePriceSnapshot>& snapshot,
                                         const std::optional<ReferencePricePolicy>& policy) {
     if (!snapshot.has_value() || !policy.has_value()) {

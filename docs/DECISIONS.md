@@ -4,7 +4,7 @@ This document records the decisions that define the current C++20 research artif
 separates the implemented choice from alternatives, assumptions, evidence, and the conditions that
 would justify revisiting it.
 
-## ADR-001 — Plaintext semantics before proof constraints
+## ADR-001: plaintext semantics before proof constraints
 
 **Status:** accepted
 
@@ -27,7 +27,7 @@ spot market implemented here.
 **Reconsider when:** a formal specification becomes authoritative and is checked against both the
 plaintext engine and proof relation.
 
-## ADR-002 — C++20 and a dependency-free core
+## ADR-002: C++20 and a dependency-free core
 
 **Status:** accepted
 
@@ -50,7 +50,7 @@ small enough to review. Dependency count is not evidence of security by itself.
 **Reconsider when:** a reviewed dependency materially reduces security risk or maintenance burden,
 or a second implementation gains a committed independent owner.
 
-## ADR-003 — Integer market state and explicit overflow handling
+## ADR-003: integer market state and explicit overflow handling
 
 **Status:** accepted
 
@@ -74,7 +74,7 @@ validation is applied at every untrusted boundary.
 **Reconsider when:** multi-currency precision, fractional lots, or a wider settlement domain is
 required.
 
-## ADR-004 — Canonical batch intake and ordering
+## ADR-004: canonical batch intake and ordering
 
 **Status:** accepted
 
@@ -96,7 +96,7 @@ order semantics.
 
 **Reconsider when:** multi-instrument or conditional orders require a different canonical key.
 
-## ADR-005 — Maximum-volume uniform clearing with an overflow-safe midpoint
+## ADR-005: maximum-volume uniform clearing with an overflow-safe midpoint
 
 **Status:** accepted
 
@@ -119,7 +119,7 @@ auction vectors under `fixtures/golden/expected/`.
 **Reconsider when:** the venue adopts an imbalance, reference-price, or volatility-sensitive
 tie-break.
 
-## ADR-006 — Price priority and Hare–Niemeyer allocation
+## ADR-006: price priority and Hare–Niemeyer allocation
 
 **Status:** accepted
 
@@ -141,7 +141,7 @@ properties, and the pro-rata golden fixture.
 
 **Reconsider when:** empirical market-quality work supports a different published allocation rule.
 
-## ADR-007 — Atomic settlement and independent transition checking
+## ADR-007: atomic settlement and independent transition checking
 
 **Status:** accepted
 
@@ -159,13 +159,13 @@ and per-account reconstruction bind the published transition to the actual aucti
 **Assumptions:** the prototype is long-only and single-instrument; self-trades that net to zero are
 valid when they follow the canonical allocation.
 
-**Evidence:** `cpp/src/engine/settlement.cpp`, `cpp/src/engine/checker.cpp`,
+**Evidence:** `cpp/src/engine/accounting.cpp`, `cpp/src/engine/checker.cpp`,
 `cpp/tests/test_checker.cpp`, and the adversarial mutation suite.
 
 **Reconsider when:** margin, shorting, fees, multiple assets, or legal novation changes settlement
 semantics.
 
-## ADR-008 — Deterministic property tests and frozen vectors
+## ADR-008: deterministic property tests and frozen vectors
 
 **Status:** accepted
 
@@ -191,7 +191,7 @@ keeps provenance stable across repository maintenance without changing any pinne
 
 **Reconsider when:** an external conformance suite or formally generated oracle becomes available.
 
-## ADR-009 — Canonical encodings and domain-separated SHA-256 commitments
+## ADR-009: canonical encodings and domain-separated SHA-256 commitments
 
 **Status:** accepted
 
@@ -214,7 +214,7 @@ the in-tree primitive receives less external scrutiny than a widely deployed lib
 **Reconsider when:** a production proof backend requires a different commitment primitive and a new
 ADR specifies its security and compatibility consequences.
 
-## ADR-010 — Complete-input accounting
+## ADR-010: complete-input accounting
 
 **Status:** accepted
 
@@ -236,7 +236,7 @@ mechanism's guarantees.
 
 **Reconsider when:** the venue adds signed ingress receipts or distributed sequencing.
 
-## ADR-011 — Blinded ledger commitments
+## ADR-011: blinded ledger commitments
 
 **Status:** accepted
 
@@ -260,7 +260,7 @@ participant proof tests, and `docs/LIMITATIONS.md`.
 **Reconsider when:** per-batch unlinkability, multi-instrument portfolios, or operator-blind balances
 enter scope.
 
-## ADR-012 — Bound oracle snapshot and validation policy
+## ADR-012: bound oracle snapshot and validation policy
 
 **Status:** accepted
 
@@ -277,12 +277,12 @@ prevents an operator from silently widening freshness or collar limits after exe
 **Assumptions:** one authenticated snapshot per single-instrument batch is sufficient; publisher
 authenticity and multi-source aggregation are outside the current implementation.
 
-**Evidence:** `cpp/src/oracle/`, oracle commitment vectors, `cpp/tests/test_proof.cpp`, and stale or
+**Evidence:** `cpp/src/engine/oracle_validation.cpp`, oracle commitment vectors, `cpp/tests/test_proof.cpp`, and stale or
 out-of-collar adversarial cases.
 
 **Reconsider when:** signed multi-source feeds or cross-venue aggregation are implemented.
 
-## ADR-013 — Transparent R1CS research harness, not a cryptographic proof
+## ADR-013: transparent R1CS research harness, not a cryptographic proof
 
 **Status:** accepted
 
@@ -307,7 +307,7 @@ boundary.
 **Reconsider when:** an integrated backend binds the full statement and witness, rejects fabricated
 certificates, and supplies reproducible prover, verifier, size, memory, and setup measurements.
 
-## ADR-014 — Native running-state accumulator
+## ADR-014: native running-state accumulator
 
 **Status:** accepted
 
@@ -324,13 +324,13 @@ or external verification cost.
 **Assumptions:** every step certificate remains available to the verifier; hash-chain integrity does
 not replace cryptographic proof soundness.
 
-**Evidence:** `cpp/src/recursive/`, `cpp/tests/test_recursive_folding.cpp`, frozen session vectors,
+**Evidence:** `cpp/src/proof/recursive/`, `cpp/tests/test_recursive_folding.cpp`, frozen session vectors,
 and `docs/RECURSIVE_STATE_TRANSITION.md`.
 
 **Reconsider when:** a measured incrementally verifiable construction replaces replay of every
 step.
 
-## ADR-015 — Deterministic simulation and bounded market-data replay
+## ADR-015: deterministic simulation and bounded market-data replay
 
 **Status:** accepted
 
@@ -354,7 +354,7 @@ live-market quality.
 **Reconsider when:** authenticated live ingestion or broader message coverage has reproducible tests
 and operational evidence.
 
-## ADR-016 — Raw artifacts are the source of empirical claims
+## ADR-016: raw artifacts are the source of empirical claims
 
 **Status:** accepted
 
@@ -377,7 +377,7 @@ throughput, market quality, or cryptographic performance.
 **Reconsider when:** a public benchmark service provides immutable raw results and equivalent
 provenance.
 
-## ADR-017 — Spec-derived commitment conformance
+## ADR-017: spec-derived commitment conformance
 
 **Status:** accepted
 
@@ -400,7 +400,7 @@ SHA-256 primitive, so their independence is limited.
 **Reconsider when:** an external implementation or standards suite provides stronger independent
 conformance evidence.
 
-## ADR-018 — No production proving backend selected
+## ADR-018: no production proving backend selected
 
 **Status:** accepted
 

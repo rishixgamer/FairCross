@@ -179,7 +179,7 @@ TEST_CASE(conformance_oracle_commitments_randomized) {
 }
 
 TEST_CASE(conformance_blinded_ledger_roots_and_salt_derivation) {
-    // ADR-086. The reference derives the salt from the ADR formula independently;
+    // ADR-011. The reference derives the salt from the ADR formula independently;
     // a drift in either derivation shows up here.
     pt::Rng rng(0xB11ADE7);
     const InstrumentId inst(1);
@@ -269,7 +269,7 @@ TEST_CASE(blinding_hides_balances_and_preserves_binding) {
 }
 
 TEST_CASE(participant_verifies_own_balance_without_the_full_ledger) {
-    // ADR-086: an account holder checks their own leaf against the published
+    // ADR-011: an account holder checks their own leaf against the published
     // root using only their authentication path.
     const InstrumentId inst(1);
     std::array<uint8_t, 32> secret{};

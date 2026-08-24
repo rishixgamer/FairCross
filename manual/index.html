@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FairCross — Interactive Instruction Manual & Research Guide</title>
+  <title>FairCross Interactive Manual</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -352,7 +352,7 @@
                 <div class="p-4 rounded-xl bg-dark-card border border-red-500/20">
                   <div class="text-xs font-mono uppercase text-red-400 font-semibold mb-1">Public Continuous Markets</div>
                   <h4 class="font-bold text-white text-sm mb-1.5">The Speed Race</h4>
-                  <p class="text-xs text-slate-400">Orders are matched continuously microsecond-by-microsecond. The fastest participant always wins, creating unfair predatory front-running.</p>
+                  <p class="text-xs text-slate-400">Orders are matched continuously microsecond-by-microsecond. The fastest participant sees and reacts to order flow first, which is what makes latency arbitrage possible.</p>
                 </div>
                 <div class="p-4 rounded-xl bg-dark-card border border-amber-500/20">
                   <div class="text-xs font-mono uppercase text-amber-400 font-semibold mb-1">Private Dark Pools</div>
@@ -370,7 +370,7 @@
             badge: "The Solution",
             content: `
               <p class="text-slate-300 leading-relaxed text-base mb-4">
-                <strong class="text-brand-400 font-semibold">FairCross</strong> solves both problems simultaneously using two breakthrough principles: <strong class="text-white">Discrete Frequent Batches</strong> and <strong class="text-white">Cryptographic Procedural Fairness</strong>.
+                <strong class="text-brand-400 font-semibold">FairCross</strong> addresses both problems with two design choices: <strong class="text-white">discrete frequent batches</strong>, which remove the speed race, and <strong class="text-white">cryptographic procedural fairness</strong>, which makes the operator's execution checkable after the fact.
               </p>
               <div class="p-5 rounded-2xl bg-gradient-to-br from-brand-500/10 via-dark-card to-dark-surface border border-brand-500/30 my-6">
                 <h4 class="font-heading font-bold text-white text-base mb-2 flex items-center space-x-2">
@@ -419,7 +419,7 @@
                   <div class="w-6 h-6 rounded-full bg-brand-accent/20 text-brand-accent flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">2</div>
                   <div>
                     <strong class="text-white text-sm block">Deterministic Single Clearing Price</strong>
-                    <p class="text-xs text-slate-400 mt-0.5">There is only one uniform market price per batch. If there's a tie, it splits exactly in the middle ($P^* = \\lfloor (P_{min} + P_{max}) / 2 \\rfloor$).</p>
+                    <p class="text-xs text-slate-400 mt-0.5">There is only one uniform market price per batch. If there's a tie, it splits exactly in the middle (<code>P* = floor((P_min + P_max) / 2)</code>).</p>
                   </div>
                 </div>
                 <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border flex items-start space-x-3.5">
@@ -532,7 +532,7 @@
             badge: "Precision & Determinism",
             content: `
               <p class="text-slate-300 leading-relaxed text-sm mb-4">
-                Floating-point numbers (<code>f32</code> / <code>f64</code>) are strictly forbidden across the entire FairCross codebase. Float operations suffer from rounding drift, non-associativity ($a + (b + c) \\ne (a + b) + c$), and platform-dependent instruction sets.
+                Floating-point types (<code>float</code>, <code>double</code>) are not used anywhere in the FairCross codebase. Float operations suffer from rounding drift, non-associativity (<code>a + (b + c) != (a + b) + c</code>), and platform-dependent instruction sets.
               </p>
               <div class="p-4 rounded-xl bg-dark-card border border-dark-border space-y-3 font-mono text-xs">
                 <div class="flex justify-between items-center text-slate-400 pb-2 border-b border-dark-border">
@@ -571,15 +571,15 @@
               <div class="space-y-3 text-xs">
                 <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
                   <strong class="text-brand-400 text-sm block mb-1">Step 1: Volume Maximization</strong>
-                  <p class="text-slate-400">Executable demand $D(p) = \\sum_{b.price \\ge p} b.qty$ and supply $S(p) = \\sum_{s.price \\le p} s.qty$ are evaluated across all candidate prices $\\mathcal{P}_{cand}$. The maximum executable volume is $V^* = \\max_p \\min(D(p), S(p))$.</p>
+                  <p class="text-slate-400">Executable demand <code>D(p) = sum of b.qty over buys with b.price &ge; p</code> and supply <code>S(p) = sum of s.qty over sells with s.price &le; p</code> are evaluated across all candidate prices <code>P_cand</code>. The maximum executable volume is <code>V* = max over p of min(D(p), S(p))</code>.</p>
                 </div>
                 <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border">
                   <strong class="text-brand-accent text-sm block mb-1">Step 2: Symmetrical Integer Midpoint Tie-Breaker</strong>
-                  <p class="text-slate-400">If multiple prices achieve $V^*$, let $P_{min}$ and $P_{max}$ be the lowest and highest maximizing prices. The unique uniform clearing price is the exact integer midpoint: <code class="text-brand-300">P* = floor((P_min + P_max) / 2)</code>.</p>
+                  <p class="text-slate-400">If multiple prices achieve <code>V*</code>, let <code>P_min</code> and <code>P_max</code> be the lowest and highest maximizing prices. The unique uniform clearing price is the exact integer midpoint: <code class="text-brand-300">P* = floor((P_min + P_max) / 2)</code>.</p>
                 </div>
               </div>
               <p class="text-slate-400 text-xs mt-3">
-                This rule completely splits economic surplus evenly between buyers and sellers and is 100% order-permutation invariant.
+                The rule picks one price with no discretion left to the operator, and the result does not depend on the order in which the batch arrived. Permutation invariance is checked by <code>prop_batch_permutation_invariance</code> in the property suite.
               </p>
             `
           },
@@ -593,21 +593,21 @@
               <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs mb-4">
                 <div class="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">
                   <strong class="block mb-0.5">In-The-Money (ITM)</strong>
-                  <span>$P_{buy} > P^*$, $P_{sell} < P^*$. Filled 100% (Strict price priority).</span>
+                  <span><code>P_buy &gt; P*</code>, <code>P_sell &lt; P*</code>. Filled 100% (Strict price priority).</span>
                 </div>
                 <div class="p-3 rounded-lg bg-brand-accent/10 border border-brand-accent/20 text-cyan-300">
                   <strong class="block mb-0.5">At-The-Money (ATM)</strong>
-                  <span>$P = P^*$. Allocated via Hare-Niemeyer largest-remainder pro-rata.</span>
+                  <span><code>P = P*</code>. Allocated via Hare-Niemeyer largest-remainder pro-rata.</span>
                 </div>
                 <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-300">
                   <strong class="block mb-0.5">Out-Of-The-Money (OTM)</strong>
-                  <span>$P_{buy} < P^*$, $P_{sell} > P^*$. Filled 0%.</span>
+                  <span><code>P_buy &lt; P*</code>, <code>P_sell &gt; P*</code>. Filled 0%.</span>
                 </div>
               </div>
               <div class="p-3.5 bg-dark-card rounded-xl border border-dark-border text-xs text-slate-300">
                 <strong class="text-white block mb-1">Hare-Niemeyer Integer Formula:</strong>
-                <span>Base fill: $base_i = \\lfloor (q_i \\cdot V_{rem}) / Q_{atm} \\rfloor$, Remainder: $rem_i = (q_i \\cdot V_{rem}) \\pmod{Q_{atm}}$.</span>
-                <p class="text-slate-400 mt-1">Undistributed leftover lots $R = V_{rem} - \\sum base_i$ are assigned 1 lot each to the highest $rem_i$, breaking ties deterministically by $(seq_i \\text{ asc}, id_i \\text{ asc})$.</p>
+                <span>Base fill: <code>base_i = floor((q_i * V_rem) / Q_atm)</code>, Remainder: <code>rem_i = (q_i * V_rem) mod Q_atm</code>.</span>
+                <p class="text-slate-400 mt-1">Undistributed leftover lots <code>R = V_rem - sum(base_i)</code> are assigned 1 lot each to the highest <code>rem_i</code>, breaking ties deterministically by <code>(seq_i ascending, id_i ascending)</code>.</p>
               </div>
             `
           }
@@ -652,7 +652,7 @@
                 <div class="font-semibold text-white">What this command does:</div>
                 <ul class="space-y-1 text-slate-400">
                   <li>• Reads starting accounts (<code class="text-slate-300">pre_state</code>) and batch orders.</li>
-                  <li>• Calculates optimal clearing price ($P^* = 100$) and volume ($V^* = 35$).</li>
+                  <li>• Calculates optimal clearing price (<code>P* = 100</code>) and volume (<code>V* = 35</code>).</li>
                   <li>• Computes allocations and generates atomic fill events.</li>
                   <li>• Executes <code class="text-brand-400">verify_transition()</code> checking balance conservation and price limits.</li>
                 </ul>
@@ -664,7 +664,7 @@
             badge: "Security Evaluation",
             content: `
               <p class="text-slate-300 leading-relaxed text-sm mb-3">
-                Evaluates a fixture against one honest control and the entire suite of 11 malicious operator mutations:
+                Evaluates a fixture against one honest control and 11 malicious operator mutations:
               </p>
               <pre class="bg-dark-bg p-3.5 rounded-xl font-mono text-xs text-red-300 border border-dark-border select-all mb-3">cpp/bin/faircross_cpp attack-matrix fixtures/sample_batch.json</pre>
               <div class="p-3.5 rounded-xl bg-dark-card border border-dark-border text-xs">
@@ -722,7 +722,7 @@
             content: `
               <div class="space-y-5">
                 <p class="text-slate-300 text-sm">
-                  Add or modify orders below to watch FairCross compute executable demand $D(p)$, supply $S(p)$, maximum crossing volume $V^*$, and integer midpoint tie-breaks in real-time:
+                  Add or modify orders below to watch FairCross compute executable demand <code>D(p)</code>, supply <code>S(p)</code>, maximum crossing volume <code>V*</code>, and integer midpoint tie-breaks as you edit:
                 </p>
 
                 <!-- Interactive Simulator Component -->
@@ -903,7 +903,7 @@
                   <span class="w-8 h-8 rounded bg-brand-accent/20 text-brand-accent flex items-center justify-center font-bold">2</span>
                   <div class="flex-1">
                     <strong class="text-white block font-sans">Binary Merkle Batch Tree</strong>
-                    <span class="text-slate-400">Leaves are sorted strictly by intake sequence <code>seq</code>. Combined via $H(\text{"FC_NODE_"} \parallel L \parallel R)$ with empty sentinels.</span>
+                    <span class="text-slate-400">Leaves are sorted strictly by intake sequence <code>seq</code>. Combined via <code>H("FC_NODE_" || L || R)</code> with empty sentinels.</span>
                   </div>
                 </div>
                 <div class="flex items-center space-x-3">
@@ -1008,14 +1008,14 @@
                   <div class="w-2 h-2 rounded-full bg-amber-400 mt-1.5 shrink-0"></div>
                   <div>
                     <strong class="text-white block">Signed Price Collar Enforcement</strong>
-                    <span class="text-slate-400">Enforces integer nanosecond freshness policies ($T_{batch} - T_{oracle} \\le \\Delta T_{max}$) and price collar bands ($|P^* - P_{ref}| \\le \\Delta_{max}$) inside the invariant checker and transparent R1CS harness.</span>
+                    <span class="text-slate-400">Enforces integer nanosecond freshness policies (<code>T_batch - T_oracle &le; max_staleness</code>) and price collar bands (<code>|P* - P_ref| &le; max_deviation_ticks</code>) inside the invariant checker and transparent R1CS harness.</span>
                   </div>
                 </div>
               </div>
             `
           },
           {
-            title: "Complete Master Reproducibility Guide",
+            title: "Reproducing every artifact",
             badge: "Reproduce Everything",
             content: `
               <p class="text-slate-300 leading-relaxed text-sm mb-4">

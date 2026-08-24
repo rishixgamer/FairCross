@@ -6,7 +6,7 @@
 // docs/PROOF_STATEMENT.md as Merkle roots over account ledger balances.
 //
 // Each account leaf carries the stable, venue-secret-derived blinding salt from
-// ADR-086. This prevents an outside observer from recomputing low-entropy
+// ADR-011. This prevents an outside observer from recomputing low-entropy
 // balances without the venue secret; it does not hide balances from the venue
 // or conceal the account set.
 
@@ -22,7 +22,7 @@
 
 namespace faircross {
 
-/// Domain separator for account salt derivation (ADR-086).
+/// Domain separator for account salt derivation (ADR-011).
 inline constexpr std::string_view ACCOUNT_SALT_TAG = "FC_ACCT_SALT_V1";
 
 /// Derives an account's blinding salt from the operator's venue secret.

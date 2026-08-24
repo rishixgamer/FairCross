@@ -66,6 +66,7 @@ The recursive layer is likewise a native hash-chained running-state accumulator.
 deterministic history binding and the interface a future recursive system would consume; it does not
 provide a Nova, Halo2, Groth16, or other succinct proof.
 
-This separation is deliberate. A future production backend must prove the same already-tested
-semantic relation, pin material cryptographic dependencies, and add independent soundness/security
-analysis without turning a circuit into a second, subtly different exchange implementation.
+The two layers are kept apart so that a future production backend has a fixed target: it must prove
+the same semantic relation the plaintext engine already tests, pin its material cryptographic
+dependencies, and carry its own soundness analysis. Writing the market rules directly into a circuit
+instead would produce a second, subtly different exchange implementation.

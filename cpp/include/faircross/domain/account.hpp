@@ -16,7 +16,7 @@ public:
 
     [[nodiscard]] AccountId id() const noexcept { return id_; }
 
-    /// 256-bit blinding salt for this account's ledger commitment leaf (ADR-086).
+    /// 256-bit blinding salt for this account's ledger commitment leaf (ADR-011).
     ///
     /// Zero means unblinded: the resulting state root is binding but not hiding,
     /// and is brute-forceable from the published conservation totals.
@@ -111,7 +111,7 @@ public:
 
     const std::map<AccountId, AccountState>& accounts() const noexcept { return accounts_; }
 
-    /// Mutable access for blinding; see `blind_ledger` (ADR-086).
+    /// Mutable access for blinding; see `blind_ledger` (ADR-011).
     std::map<AccountId, AccountState>& accounts_mut() noexcept { return accounts_; }
 
     /// Whether every account carries a blinding salt.

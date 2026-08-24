@@ -548,7 +548,7 @@ SessionProof fold_session_from_manifest(const std::string& name) {
         ledger.insert_account(std::move(state));
     }
 
-    // The CLI blinds the genesis ledger before folding (ADR-086); this replica
+    // The CLI blinds the genesis ledger before folding (ADR-011); this replica
     // must use the same venue secret or the ledger roots diverge.
     constexpr std::array<uint8_t, 32> kDemoVenueSecret = {
         'F', 'a', 'i', 'r', 'C', 'r', 'o', 's', 's', '-', 'd', 'e', 'm', 'o', '-', 'v',

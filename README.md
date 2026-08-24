@@ -12,8 +12,8 @@ independently checkable without publishing every order? The repository implement
 state machine first, then layers canonical commitments, invariant checks, a transparent R1CS
 research model, adversarial tests, and reproducible experiments around it.
 
-> FairCross is an engineering and research artifact—not a broker, live trading system, production
-> exchange, or production zero-knowledge prover.
+> FairCross is an engineering and research artifact. It is not a broker, a live trading system, a
+> production exchange, or a production zero-knowledge prover.
 
 ## Engineering snapshot
 
@@ -51,8 +51,8 @@ To regenerate every current experiment artifact:
 ```
 
 Each file in [`experiments/results/`](experiments/results/) carries its own environment block and
-reproduction command. The raw artifacts—not prose summaries—are the source of truth for measured
-values.
+reproduction command. Where a number in this README disagrees with the artifact it came from, the
+artifact is correct.
 
 ### Current evidence snapshot
 
@@ -84,9 +84,9 @@ orders → clear → allocate → canonical fills → balances
 integer domain primitives and canonical encodings
 ```
 
-The layer boundaries are load-bearing: market rules are tested as ordinary deterministic C++ before
-they are represented as constraints, and cryptographic encoding is kept separate from allocation
-semantics.
+The boundaries matter for a practical reason. Market rules are tested as ordinary deterministic C++
+before they are represented as constraints, and cryptographic encoding is kept separate from
+allocation semantics, so a bug in one layer does not hide in the other.
 
 ## Repository map
 
@@ -112,9 +112,6 @@ semantics.
   regulatory controls, and live order routing are out of scope.
 - Simulator and timing artifacts are controlled prototype measurements on the environment recorded
   in each file. They are not evidence of live-market quality, alpha, or production throughput.
-
-These boundaries are intentional: FairCross prioritizes rules that can be read, falsified, and
-reproduced over claims that merely sound advanced.
 
 ## License
 

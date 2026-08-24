@@ -83,5 +83,5 @@ each artifact. Transparent R1CS synthesis time is not cryptographic proving time
 not evidence of alpha, stable fill quality, or deployment throughput. Modeled values are labeled as
 models and must not be presented as measurements.
 
-Closing these boundaries requires new implementation evidence, threat-model analysis, and
-reproducible artifacts—not broader wording.
+Closing any of these boundaries requires new implementation evidence, threat-model analysis, and
+reproducible artifacts. Rewording the claim does not close it.

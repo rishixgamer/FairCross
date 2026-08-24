@@ -36,7 +36,7 @@ using namespace faircross::cli;
 
 namespace {
 
-/// Venue secret used by this CLI to blind ledger commitments (ADR-086).
+/// Venue secret used by this CLI to blind ledger commitments (ADR-011).
 ///
 /// A fixed demo constant, so fixture runs are reproducible. A real deployment
 /// supplies its own and does not publish it; publishing it makes the state root

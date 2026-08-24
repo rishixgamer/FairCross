@@ -64,4 +64,4 @@ The build treats warnings as defects and runs the full test suite under two sani
 
 The FairCross dependency posture is lean to the point of being trivial to audit: the implementation has **no third-party runtime dependencies at all**. SHA-256 is implemented in-tree and pinned against published NIST vectors. There is consequently no dependency tree to carry vulnerabilities, license conflicts, or unmaintained packages.
 
-The trade-off is stated rather than hidden: an in-tree cryptographic primitive receives far less external scrutiny than a widely used library. SHA-256 is pinned against NIST test vectors, but the conformance harness reuses that same implementation, so a defect inside it would be invisible to the harness (`docs/LIMITATIONS.md` §2.7).
+The trade-off is stated rather than hidden: an in-tree cryptographic primitive receives far less external scrutiny than a widely used library. SHA-256 is pinned against NIST test vectors, but the conformance harness reuses that same implementation, so a defect inside it would be invisible to the harness (`docs/LIMITATIONS.md` §7).

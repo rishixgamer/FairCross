@@ -1,7 +1,7 @@
 # Development process
 
-FairCross is maintained as a research artifact whose claims must remain narrower than its evidence.
-Changes are accepted only when the deterministic C++ semantics, public documentation, and
+FairCross is maintained so that nothing in the documentation claims more than the artifacts show.
+Changes are accepted only when the deterministic C++ semantics, the public documentation, and the
 reproducible artifacts agree.
 
 ## Verification discipline

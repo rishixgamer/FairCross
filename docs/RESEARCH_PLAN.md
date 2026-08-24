@@ -1,4 +1,4 @@
-# Research Plan
+# Research plan
 
 ## Primary question
 
@@ -21,11 +21,11 @@ some hidden subset" is insufficient against a malicious venue.
 
 ## Core experiments
 
-### E1 — Plaintext engine correctness
+### E1: plaintext engine correctness
 
 Property-based testing across generated order sets.
 
-### E2 — Proof scalability
+### E2: proof scalability
 
 For supported batch sizes, measure:
 
@@ -35,16 +35,16 @@ For supported batch sizes, measure:
 - peak memory;
 - proof size.
 
-### E3 — Attack matrix
+### E3: attack matrix
 
 For each malicious operator, record whether generation/verification rejects the transition and at
 which invariant.
 
-### E4 — Recursion
+### E4: recursion
 
 Compare independent batch proofs versus a folded/running history representation.
 
-### E5 — Market mechanism
+### E5: market mechanism
 
 Vary batch interval in simulation and measure:
 
@@ -76,4 +76,4 @@ Every empirical claim must name the artifact it came from, and every artifact mu
 
 Each artifact embeds an `environment` block and a `reproduction_command`. Timing columns are only comparable across runs of the *same* build configuration: the benchmark binary is compiled at `-O2` without sanitizers, while the test binary runs under ASan and UBSan. A latency figure taken from a sanitized build measures the sanitizer, not the implementation.
 
-Structural columns — constraint counts, variable counts, proof sizes — are deterministic and must not move between runs. If one does, it is a semantic change, not benchmark noise, and it must be explained before the artifact is republished.
+Structural columns (constraint counts, variable counts, proof sizes) are deterministic and must not move between runs. If one does, it is a semantic change, not benchmark noise, and it must be explained before the artifact is republished.
